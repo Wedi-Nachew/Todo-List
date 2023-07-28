@@ -4,6 +4,7 @@ body{
     padding: 0;
     margin: 0;
     font-family: 'Cormorant Garamond', serif;
+    box-sizing: border-box;
 }
 .header{
     background-color: #1b263b;
@@ -31,7 +32,7 @@ body{
 }
 .header + div{
     display: flex;
-    height: calc(100vh - 69px);
+    height: calc(100vh - 60px);
 }
 .side-bar{
     display: flex;
@@ -40,33 +41,50 @@ body{
     height: 100%;
     padding: 40px 20px;
 }
-.task-menu{
+.task-menu,
+.projects{
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 button{
-    padding: 10px 150px 10px 15px;
+    padding: 5px 125px 5px 15px;
     text-align: left;
     border: none;
-    background-color: #ffffff;
     font-size: 1.1rem;
     display: flex;
     align-items: center;
     gap: 15px;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 15px;
     background-color: transparent;
     font-family: inherit;
     font-weight: 400;
 }
 button:hover{
     background-color: #c8c8c8;
+    font-weight: 700;
+    box-shadow: #000
 }
 img[src$="svg"]{
     height: 25px;
     width: auto;
 }
-h2{
-    font-family: "Borel", cursive;
+.projects h2{
+    margin-bottom: 0;
 }
+body > img[src$="svg"]{
+    position: fixed;
+    top: 85%;
+    left: 90%;
+    height: 60px;
+    width: auto;
+    cursor: pointer;
+}
+body > img[src$="svg"]:hover{
+    height: 65px;
+    width: auto;
+}
+
+
+

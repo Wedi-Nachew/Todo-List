@@ -12,17 +12,17 @@ body{
     display: flex;
     align-items: center;
     column-gap: 10px;
-    font-family: 'Borel', cursive;
-    padding: 0;
     margin: 0;
     height: 60px;
+    padding-right: 75px;
 }
 .header h1{
     margin-top: 40px;
     font-size: 2rem;
     vertical-align: center;
+    font-family: 'Borel', cursive;
 }
-.header img[src$="svg"]{
+.header > img[src$="svg"]{
     height: 45px;
     width: 45px;
     margin: 16px 0 20px 30px;
@@ -34,6 +34,15 @@ body{
     display: flex;
     height: calc(100vh - 60px);
     padding-right: 75px;
+}
+.header > button{
+    margin-left: auto;
+    color: #000;
+    padding: 5px 40px 5px 10px;
+    background-color: #7ae582;
+}
+.header > button:hover{
+    background-color: #71f279;
 }
 .side-bar{
     display: flex;
@@ -73,17 +82,6 @@ img[src$="svg"]{
 }
 .projects h2{
     margin-bottom: 0;
-}
-body > img[src$="svg"]{
-    position: fixed;
-    top: 85%;
-    left: 90%;
-    height: 60px;
-    width: auto;
-    cursor: pointer;
-}
-body > img[src$="svg"]:hover{
-    height: 65px;
     width: auto;
 }
 

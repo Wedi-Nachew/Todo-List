@@ -57,7 +57,7 @@ body{
     flex-direction: column;
     gap: 10px;
 }
-button{
+.side-bar button{
     padding: 5px 125px 5px 15px;
     text-align: left;
     border: none;
@@ -71,7 +71,7 @@ button{
     font-family: inherit;
     font-weight: 400;
 }
-button:hover{
+.side-bar button:hover{
     background-color: #c8c8c8;
     font-weight: 700;
     box-shadow: #000
@@ -83,6 +83,24 @@ img[src$="svg"]{
 .projects h2{
     margin-bottom: 0;
     width: auto;
+}
+
+form input,
+form button,
+form select{
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+    appearance: none;
+    font-size: 100%;
+    font-family: inherit;
+}
+form{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    border: 1px solid black;
 }
 
 

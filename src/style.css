@@ -18,32 +18,43 @@ body{
 h1 img[src$="svg"]{
     height: 45px;
     width: 45px;
-    background-color: #ffbc42;
+    background-color: #7ae582;
     border-radius: 50%;
+    box-shadow: 0 0 10px #1b263f;
 }
 .header + div{
     display: flex;
-    margin-top: 40px;
+    flex-grow: 1;
 }
 .side-bar{
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
+    background-color: hsl(0, 0%, 97%);
+    
 }
 .task-menu{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 40px;
+    margin-left: 20px;
+    flex-grow: 1;
 }
 button{
     padding: 10px 200px 10px 15px;
     text-align: left;
     border: none;
-    background-color: #ebe8e8;
+    background-color: #ffffff;
     font-size: 0.9rem;
     display: flex;
     align-items: center;
     gap: 15px;
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: transparent;
+}
+button:hover{
+    background-color: #c8c8c8;
 }
 img[src$="svg"]{
     height: 25px;

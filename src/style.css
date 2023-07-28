@@ -1,0 +1,7 @@
+body{
+    display: flex;
+    flex-flow: column wrap;
+}
+.header{
+    background-color: #1b263b;
+}

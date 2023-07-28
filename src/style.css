@@ -33,6 +33,7 @@ body{
 .header + div{
     display: flex;
     height: calc(100vh - 60px);
+    padding-right: 75px;
 }
 .side-bar{
     display: flex;

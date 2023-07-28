@@ -60,15 +60,17 @@
         <div class="main">
            <form action="#" method="post">
                 <input type="text" id="title" name="title" placeholder="Title">
-                <input type="text" id="title" name="title" placeholder="Description">
-                <input type="date" id="due-time" name="due-time">
-                <select>
-                    <option value="normal">Normal</option>
-                    <option value="medium">Medium</option>
-                    <option value="High">High</option>
-                    <option value="Higher">Higher</option>
-                </select>
-                <button>Add Task</button>
+                <textarea name="description" id="description" cols="30" rows="4" placeholder="Description">Description</textarea>
+                <div>
+                    <input type="date" id="date" name="due-time">
+                    <select name="priority" id="priority">
+                        <option value="normal">Normal</option>
+                        <option value="medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Higher">Higher</option>
+                    </select>
+                    <button>Add Task</button>
+                </div>
            </form>
         </div>
     </div>

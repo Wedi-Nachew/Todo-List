@@ -1,1 +1,1 @@
-console.log("mode-dev")
+import "./style.css"

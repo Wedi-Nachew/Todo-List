@@ -10,5 +10,42 @@ body{
 }
 .header h1{
     font-size: 1.7rem;
-    margin-left: 16px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+h1 img[src$="svg"]{
+    height: 45px;
+    width: 45px;
+    background-color: #ffbc42;
+    border-radius: 50%;
+}
+.header + div{
+    display: flex;
+    margin-top: 40px;
+}
+.side-bar{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+.task-menu{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+button{
+    padding: 10px 200px 10px 15px;
+    text-align: left;
+    border: none;
+    background-color: #ebe8e8;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+img[src$="svg"]{
+    height: 25px;
+    width: auto;
 }

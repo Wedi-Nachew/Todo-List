@@ -144,12 +144,10 @@ input[name="title"]::placeholder{
     color: #141414;
 }
 textarea{
-    font-size: 1.2rem;
+    font-size: 1rem;
     resize: none;
 }
-textarea::placeholder{
-    font-size: 1.1rem;
-}
+
 
 select, 
 input[type="date"],
@@ -193,6 +191,7 @@ form div::after{
 .hidden{
     visibility: hidden;
 }
+
 
 
 

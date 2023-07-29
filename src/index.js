@@ -55,13 +55,14 @@ const Tasks = (() => {
     const Task = (title, description, dueDate, priority) => {
         return {title, description, dueDate, priority}
     }
+
     add.addEventListener("click", (event)=>{
         if(details.title && details.dueDate && details.priority){
             event.preventDefault()
             addTask()
             inputForm.childNodes.forEach(input => input.value = "")
             InputFormDisplay.inputFormWrapper.className = "hidden"
-            console.log(tasks)
+            RenderTasks.render()
       }
     })
 
@@ -70,3 +71,17 @@ const Tasks = (() => {
         tasks.push(newTask)
     }
 })()
+
+const RenderTasks= ()=>{
+    const main = document.querySelector(".main")
+    const h1 = document.createElement("div")
+    H1.textContent = "Hi Main"
+    const render =()=> main.appendChild(h1)
+    
+    return {render}
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    inputForm.childNodes.forEach(input => input.value = "")
+})

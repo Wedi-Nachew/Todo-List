@@ -25,6 +25,7 @@ body{
     padding-right: 150px;
     position: fixed;
     width: 100%;
+    z-index: 9999;
 }
 .header h1{
     margin-top: 40px;
@@ -72,7 +73,7 @@ body{
     background-color: hsl(0, 0%, 97%);
     height: 100%;
     padding: 40px 20px;
-    width: 20vw;
+    width: 22vw;
     position: fixed;
 }
 .task-menu,
@@ -120,7 +121,7 @@ img[src$="svg"]{
     height: 100vh;
     backdrop-filter: blur(3px);
 }
-input:not(input[type=checkbox]),
+input,
 form button,
 select,
 textarea{
@@ -159,8 +160,6 @@ form textarea{
     resize: none;
     padding-left: 0;
 }
-
-
 form select, 
 form input[type="date"],
 form select + button{
@@ -205,12 +204,17 @@ form div::after{
 }
 
 .main {
-    margin-left: 20vw;
+    margin-left: 25vw;
     display: flex;
     flex-direction: column;
     width: 80vw;
-    padding: 40px 200px 40px 50px;
+    margin-top: 10vh;
+    padding: 0 200px 40px 50px;
     overflow-y: auto;
+}
+.main > h1{
+    margin-top: 0;
+    position: sticky;
 }
 .task{
     display: flex;
@@ -233,11 +237,21 @@ form div::after{
     margin-bottom: 0;
     font-size: 1.1rem;
 }
-
 .task-text > p{
     margin-left: auto;
     font-size: 1.1rem;
 }
+input[type="checkbox"]{
+    width: 45px;
+}
+input[type="checkbox"]:not(:checked){
+    content: url("../src/icons/unchecked.svg");
+}
+input[type="checkbox"]:checked{
+    content: url("../src/icons/checked.svg");
+}
+
+
 
 
 

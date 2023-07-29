@@ -89,6 +89,7 @@ const RenderTasks= (()=>{
         taskText.className = "task-text"
         checkBox.type = "checkbox"
         checkBox.value = "completed"
+        checkBox.id = "task-completion"
 
         title.textContent = info1
         description.textContent = info2
@@ -113,6 +114,7 @@ const RenderTasks= (()=>{
 
    return{setTaskTexts, append}
 })()
+
 
 
 

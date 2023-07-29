@@ -59,6 +59,7 @@ const Tasks = (() => {
         if(details.title && details.dueDate && details.priority){
             event.preventDefault()
             addTask()
+            inputForm.childNodes.forEach(input => input.value = "")
             InputFormDisplay.inputFormWrapper.className = "hidden"
             console.log(tasks)
       }

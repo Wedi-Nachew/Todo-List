@@ -34,8 +34,11 @@ const taskInfoReceiver = (()=>{
                 taskInfo.priority = Number.parseInt(event.target.value)
                 break
         }
-        console.log(taskInfo)
     })
+    
+    const getTaskInfo= () => taskInfo
+
+    return {getTaskInfo}
 })()
 
 

@@ -1,3 +1,7 @@
+:root{
+    position: relative;
+}
+
 body{
     display: flex;
     flex-flow: column wrap;
@@ -32,7 +36,7 @@ body{
 }
 .header + div{
     display: flex;
-    height: calc(100vh - 60px);
+    height: 80%;
     padding-right: 75px;
 }
 .header > button{
@@ -94,7 +98,18 @@ img[src$="svg"]{
     margin-bottom: 0;
     width: auto;
 }
-
+.form-wrapper{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    backdrop-filter: blur(3px);
+}
 input,
 form button,
 select,
@@ -108,13 +123,12 @@ textarea{
     outline: none;
 }
 form{
-    margin-top: 30px;
     display: flex;
     flex-direction: column;
     width: 550px;
-    border: 1px solid #adb0b1;
     border-radius: 10px;
     padding: 5px 10px;
+    background-color:aliceblue
 }
 
 input, textarea{
@@ -172,6 +186,7 @@ form div::after{
     left: 260px;
     top: 5px;
 }
+
 
 
 

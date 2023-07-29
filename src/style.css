@@ -223,7 +223,7 @@ form div::after{
     justify-content: center;
     gap: 10px;
     padding: 0 10px;
-    border-bottom: 1px dotted rgb(128, 128, 128, .7);
+    border: 1px solid rgb(128, 128, 128, .4);
 }
 .task-text{
     display: flex;
@@ -233,9 +233,10 @@ form div::after{
 }
 .task-text div p{
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 .task-text div h3{
+    margin-top: 0;
     margin-bottom: 0;
     font-size: 1.1rem;
 }
@@ -251,7 +252,12 @@ input[type="checkbox"]:not(:checked){
 }
 input[type="checkbox"]:checked{
     content: url("../src/icons/checked.svg");
+    width: 45px;
 }
+.priority{
+    display: none;
+}
+
 
 
 

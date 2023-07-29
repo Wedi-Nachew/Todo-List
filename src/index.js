@@ -64,7 +64,8 @@ const Tasks = (() => {
             inputForm.childNodes.forEach(input => input.value = "")
             InputFormDisplay.inputFormWrapper.className = "hidden"
             RenderTasks.append(details.title, details.description, details.dueDate, details.priority)
-      }
+            PriorityMark.priorityIndicators()
+        }
     })
 
     function addTask(){
@@ -96,7 +97,7 @@ const RenderTasks= (()=>{
         description.textContent = info2
         dueDate.textContent = info3
         priority.textContent = info4
-        priority.style.display = "none"
+        priority.className = "priority"
 
         div.appendChild(title)
         div.appendChild(description)
@@ -106,18 +107,39 @@ const RenderTasks= (()=>{
         task.appendChild(taskText)
         task.appendChild(priority)
         main.appendChild(task)
+
     }
 
-    const setTaskTexts = (info1,info2, info3) =>{
-        title.textContent = info1
-        description.textContent = info2
-        dueDate.textContent = info3
-    }
-
-    
-
-   return{setTaskTexts, append}
+   return{append}
 })()
+
+const PriorityMark = (() => {
+    const main = document.querySelector(".main")
+
+    function priorityIndicators(){
+        
+        main.childNodes.forEach(child => {
+            if(child.className == "task"){child.childNodes.forEach(grandChild => {
+                    if(grandChild.className == "priority" && grandChild.textContent == 1){
+                        grandChild.parentNode.style.cssText = "border-left: 12px solid #ef476f;"
+                    }else if(grandChild.className == "priority" && grandChild.textContent == 2){
+                        grandChild.parentNode.style.cssText = "border-left: 12px solid #ffd166;"
+                    }else if(grandChild.className == "priority" && grandChild.textContent == 3){
+                        grandChild.parentNode.style.cssText = "border-left: 12px solid #06d6a0;"
+                    }else if(grandChild.className == "priority" && grandChild.textContent == 4){
+                        grandChild.parentNode.style.cssText = "border-left: 12px solid #06d6a0;"
+                    }
+                })
+            }
+        })
+   }
+
+   priorityIndicators()
+
+   return{priorityIndicators}
+})()
+
+
 
 
 

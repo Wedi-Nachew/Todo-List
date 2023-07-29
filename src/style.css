@@ -98,7 +98,7 @@ img[src$="svg"]{
     margin-bottom: 0;
     width: auto;
 }
-.form-wrapper{
+#form-wrapper{
     position: absolute;
     width: 100%;
     top: 0;
@@ -174,8 +174,10 @@ form div button{
     margin-left: auto;
     background-color: #7ae582;
     border: none;
+    color: #000;
     font-weight: 600;
     font-size: 1.1rem;
+    padding: 9px 18px;
 }
 form div{
     position: relative;
@@ -185,6 +187,12 @@ form div::after{
     position: absolute;
     left: 260px;
     top: 5px;
+}
+.show{
+    visibility: visible;
+}
+.hidden{
+    visibility: hidden;
 }
 
 

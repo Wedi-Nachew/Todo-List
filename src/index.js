@@ -1,5 +1,32 @@
 import "./style.css"
 
+const addTask = document.querySelector(".header > button")
+const inputFormWrapper = document.querySelector("#form-wrapper")
+const inputForm = document.querySelector("form")
+
+addTask.addEventListener("click", ()=>{
+    inputFormWrapper.className = "show"
+})
+inputFormWrapper.addEventListener("click", (event)=>{
+    if(!inputForm.contains(event.target) || event.target.nodeName == "BUTTON"){
+        inputFormWrapper.className = "hidden"
+    }
+})
+
+document.addEventListener("DOMContentLoaded",() =>{
+    inputFormWrapper.className = "hidden"
+})
+
+
+
+
+
+
+
+
+
+
+
 
 // const add = document.querySelector(".header > button")
 // console.log(add)

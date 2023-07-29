@@ -1,23 +1,27 @@
 import "./style.css"
 
-const addTask = document.querySelector(".header > button")
-const inputFormWrapper = document.querySelector("#form-wrapper")
 const inputForm = document.querySelector("form")
 
+const InputFormDisplay = (()=>{
+    const addTask = document.querySelector(".header > button")
+    const inputFormWrapper = document.querySelector("#form-wrapper")
 
+    addTask.addEventListener("click", ()=>{
+        inputFormWrapper.className = "show"
+    })
 
-addTask.addEventListener("click", ()=>{
-    inputFormWrapper.className = "show"
-})
-inputFormWrapper.addEventListener("click", (event)=>{
-    if(!inputForm.contains(event.target) || event.target.nodeName == "BUTTON"){
-        inputFormWrapper.className = "hidden"
-    }
-})
+    inputFormWrapper.addEventListener("click", (event)=>{
+        if(!inputForm.contains(event.target) || event.target.nodeName == "BUTTON"){
+            inputFormWrapper.className = "hidden"
+        }
+    })
+    
+})()
 
-const taskInfoReceiver = (()=>{
+const TaskInfoReceiver = (()=>{
 
     const taskInfo = {}
+    const getTaskInfo= () => taskInfo
 
     inputForm.addEventListener("input", (event)=>{
         switch(event.target.name){
@@ -34,9 +38,10 @@ const taskInfoReceiver = (()=>{
                 taskInfo.priority = Number.parseInt(event.target.value)
                 break
         }
+        console.log(getTaskInfo())
     })
     
-    const getTaskInfo= () => taskInfo
+
 
     return {getTaskInfo}
 })()
@@ -49,9 +54,9 @@ const taskInfoReceiver = (()=>{
 
 
 
-document.addEventListener("DOMContentLoaded",() =>{
-    inputFormWrapper.className = "hidden"
-})
+// document.addEventListener("DOMContentLoaded",() =>{
+//     InputForm.inputFormWrapper.className = "hidden"
+// })
 
 
 

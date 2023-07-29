@@ -62,17 +62,17 @@
     </div>
     <div id="form-wrapper" class="hidden">
         <form action="#" method="post">
-            <input type="text" id="title" name="title" placeholder="Title">
-            <textarea name="description" id="description" cols="30" rows="4" placeholder="Description"></textarea>
+            <input type="text" id="title" name="title" placeholder="Title" required>
+            <textarea name="description" cols="30" rows="4" placeholder="Description"></textarea>
             <div>
-                <input type="date" id="date" name="due-date">
-                <select name="priority" id="priority">
+                <input type="date" id="date" name="due-date" required>
+                <select name="priority" id="priority" required>
                     <option value="1">Priority 1</option>
                     <option value="2">Priority 2</option>
                     <option value="3">Priority 3</option>
                     <option value="4">Priority 4</option>
                 </select>
-                <button>Add Task</button>
+                <button class="add-btn">Add Task</button>
             </div>
        </form>
     </div>

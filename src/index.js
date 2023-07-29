@@ -11,10 +11,12 @@ const InputFormDisplay = (()=>{
     })
 
     inputFormWrapper.addEventListener("click", (event)=>{
-        if(!inputForm.contains(event.target) || event.target.nodeName == "BUTTON"){
+        if(!inputForm.contains(event.target)){
             inputFormWrapper.className = "hidden"
         }
     })
+    
+    return {inputFormWrapper}
     
 })()
 
@@ -38,7 +40,6 @@ const TaskInfoReceiver = (()=>{
                 taskInfo.priority = Number.parseInt(event.target.value)
                 break
         }
-        console.log(getTaskInfo())
     })
     
 
@@ -46,48 +47,25 @@ const TaskInfoReceiver = (()=>{
     return {getTaskInfo}
 })()
 
+const Tasks = (() => {
+    const add = document.querySelector(".add-btn")
+    const details = TaskInfoReceiver.getTaskInfo()
+    const tasks = []
 
+    const Task = (title, description, dueDate, priority) => {
+        return {title, description, dueDate, priority}
+    }
+    add.addEventListener("click", (event)=>{
+        if(details.title && details.dueDate && details.priority){
+            event.preventDefault()
+            addTask()
+            InputFormDisplay.inputFormWrapper.className = "hidden"
+            console.log(tasks)
+      }
+    })
 
-
-
-
-
-
-
-// document.addEventListener("DOMContentLoaded",() =>{
-//     InputForm.inputFormWrapper.className = "hidden"
-// })
-
-
-
-
-
-
-
-
-
-
-
-
-// const add = document.querySelector(".header > button")
-// console.log(add)
-
-// const tasks = []
-// const taskInfo = {}
-// const Task=(title, description, dueTime, priority)=>{
-//     return{title, description, dueTime, priority}
-// }
-
-// function addTask(taskInfo){
-//     const newTask = Task(taskInfo.title, taskInfo.description, taskInfo.dueTime, taskInfo.priority)
-//     tasks.push(newTask);
-// }
-
-// add.addEventListener("click", ()=>{
-//     taskInfo.title = prompt("Enter Title")
-//     taskInfo.description = prompt("Enter Detailes")
-//     taskInfo.dueTime = prompt("Enter due time")
-//     taskInfo.priority = prompt("Enter the priority level of the task using 1-5 numbers")
-//     addTask(taskInfo)
-//     console.log(tasks)
-// })
+    function addTask(){
+        const newTask = Task(details.title, details.description, details.dueDate, details.priority)
+        tasks.push(newTask)
+    }
+})()

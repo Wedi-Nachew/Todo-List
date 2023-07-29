@@ -163,6 +163,15 @@ form div button{
     font-weight: 600;
     font-size: 1.1rem;
 }
+form div{
+    position: relative;
+}
+form div::after{
+    content: url(../src/icons/drop-down.svg);
+    position: absolute;
+    left: 260px;
+    top: 5px;
+}
 
 
 

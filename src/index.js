@@ -63,7 +63,7 @@ const Tasks = (() => {
             addTask()
             inputForm.childNodes.forEach(input => input.value = "")
             InputFormDisplay.inputFormWrapper.className = "hidden"
-            RenderTasks.append(details.title, details.description, details.dueDate)
+            RenderTasks.append(details.title, details.description, details.dueDate, details.priority)
       }
     })
 
@@ -75,7 +75,7 @@ const Tasks = (() => {
 
 const RenderTasks= (()=>{
     
-    const append = (info1, info2, info3)=> {
+    const append = (info1, info2, info3, info4)=> {
         const main = document.querySelector(".main")
         const task = document.createElement("div")
         const checkBox = document.createElement("input")
@@ -84,6 +84,7 @@ const RenderTasks= (()=>{
         const title = document.createElement("h3")
         const description = document.createElement("p")
         const dueDate = document.createElement("p")
+        const priority = document.createElement("p")
 
         task.className = "task"
         taskText.className = "task-text"
@@ -94,6 +95,8 @@ const RenderTasks= (()=>{
         title.textContent = info1
         description.textContent = info2
         dueDate.textContent = info3
+        priority.textContent = info4
+        priority.style.display = "none"
 
         div.appendChild(title)
         div.appendChild(description)
@@ -101,6 +104,7 @@ const RenderTasks= (()=>{
         taskText.appendChild(dueDate)
         task.appendChild(checkBox)
         task.appendChild(taskText)
+        task.appendChild(priority)
         main.appendChild(task)
     }
 

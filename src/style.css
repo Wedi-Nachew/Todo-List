@@ -23,8 +23,8 @@ body{
     margin: 0;
     height: 10vh;
     padding-right: 150px;
-    /* position: fixed;
-    width: 100%; */
+    position: fixed;
+    width: 100%;
 }
 .header h1{
     margin-top: 40px;
@@ -63,6 +63,7 @@ body{
     display: flex;
     flex-grow: 1;
     padding-right: 75px;
+    margin-top: 10vh;
     /* width: 100vw; */
 }
 .side-bar{
@@ -72,7 +73,7 @@ body{
     height: 100%;
     padding: 40px 20px;
     width: 20vw;
-    position: sticky;
+    position: fixed;
 }
 .task-menu,
 .projects{
@@ -108,7 +109,7 @@ img[src$="svg"]{
     width: auto;
 }
 #form-wrapper{
-    position: absolute;
+    position: fixed;
     width: 100%;
     top: 0;
     left: 0;
@@ -138,7 +139,6 @@ form{
     border-radius: 10px;
     padding: 15px;
     background-color: #fff;
-    
 }
 
 input, textarea{
@@ -205,6 +205,7 @@ form div::after{
 }
 
 .main {
+    margin-left: 20vw;
     display: flex;
     flex-direction: column;
     width: 80vw;

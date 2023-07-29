@@ -63,6 +63,7 @@ const Tasks = (() => {
             addTask()
             inputForm.childNodes.forEach(input => input.value = "")
             InputFormDisplay.inputFormWrapper.className = "hidden"
+            RenderTasks.append(details.title, details.description, details.dueDate)
       }
     })
 
@@ -73,11 +74,44 @@ const Tasks = (() => {
 })()
 
 const RenderTasks= (()=>{
-    const main = document.querySelector(".main")
-    const div = document.createElement("div")
-    div.textContent = "Hi Main"
-    main.appendChild(div)
     
+    const append = (info1, info2, info3)=> {
+        const main = document.querySelector(".main")
+        const task = document.createElement("div")
+        const checkBox = document.createElement("input")
+        const taskText = document.createElement("div")
+        const div = document.createElement("div")
+        const title = document.createElement("h3")
+        const description = document.createElement("p")
+        const dueDate = document.createElement("p")
+
+        task.className = "task"
+        taskText.className = "task-text"
+        checkBox.type = "checkbox"
+        checkBox.value = "completed"
+
+        title.textContent = info1
+        description.textContent = info2
+        dueDate.textContent = info3
+
+        div.appendChild(title)
+        div.appendChild(description)
+        taskText.appendChild(div)
+        taskText.appendChild(dueDate)
+        task.appendChild(checkBox)
+        task.appendChild(taskText)
+        main.appendChild(task)
+    }
+
+    const setTaskTexts = (info1,info2, info3) =>{
+        title.textContent = info1
+        description.textContent = info2
+        dueDate.textContent = info3
+    }
+
+    
+
+   return{setTaskTexts, append}
 })()
 
 

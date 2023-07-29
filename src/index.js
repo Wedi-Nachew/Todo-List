@@ -2,6 +2,7 @@ import "./style.css"
 
 const inputForm = document.querySelector("form")
 
+
 const InputFormDisplay = (()=>{
     const addTask = document.querySelector(".header > button")
     const inputFormWrapper = document.querySelector("#form-wrapper")
@@ -62,7 +63,6 @@ const Tasks = (() => {
             addTask()
             inputForm.childNodes.forEach(input => input.value = "")
             InputFormDisplay.inputFormWrapper.className = "hidden"
-            RenderTasks.render()
       }
     })
 
@@ -72,16 +72,32 @@ const Tasks = (() => {
     }
 })()
 
-const RenderTasks= ()=>{
+const RenderTasks= (()=>{
     const main = document.querySelector(".main")
-    const h1 = document.createElement("div")
-    H1.textContent = "Hi Main"
-    const render =()=> main.appendChild(h1)
+    const div = document.createElement("div")
+    div.textContent = "Hi Main"
+    main.appendChild(div)
     
-    return {render}
-}
+})()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
     inputForm.childNodes.forEach(input => input.value = "")
+    // dateSelect.childNodes.forEach(field => field.value = "")
+
 })

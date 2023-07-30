@@ -7,6 +7,9 @@ const inputForm = document.querySelector("form")
 const InputFormDisplay = (()=>{
     const addTask = document.querySelector(".header > button")
     const inputFormWrapper = document.querySelector("#form-wrapper")
+    const div = document.querySelector("form div")
+    const dropDown = window.getComputedStyle(div, "::after").content
+    console.log(dropDown)
 
     addTask.addEventListener("click", ()=>{
         inputFormWrapper.className = "show"
@@ -27,6 +30,8 @@ const InputFormDisplay = (()=>{
             }
         })
     }
+
+
 
     resetInputFields()
     return {inputFormWrapper, resetInputFields}
@@ -162,17 +167,3 @@ const PriorityMark = (() => {
 
 
 
-
-
-
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    // inputForm.childNodes.forEach(input => input.value = "")
-    // dateSelect.childNodes.forEach(field => field.value = "")
-
-})

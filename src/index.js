@@ -1,7 +1,10 @@
 import "./style.css"
-import { format } from 'date-fns'
+import { format, isEqual, lightFormat, parseISO } from 'date-fns'
+import {Today as module} from "./today.js"
+
 
 const inputForm = document.querySelector("form")
+
 
 
 const InputFormDisplay = (()=>{
@@ -36,7 +39,6 @@ const InputFormDisplay = (()=>{
 })()
 
 const TaskInfoReceiver = (()=>{
-
     const taskInfo = {}
     const getTaskInfo= () => taskInfo
 
@@ -57,15 +59,16 @@ const TaskInfoReceiver = (()=>{
         }
     })
     
-
-
     return {getTaskInfo}
 })()
 
 const Tasks = (() => {
     const add = document.querySelector(".add-btn")
     const details = TaskInfoReceiver.getTaskInfo()
-    const tasks = []
+    const tasks = [
+                    { title: "jjhk", description: "hjjh", dueDate: "2023-07-19", priority: 1},
+                    {title: "hjhjhjhj", description: "j", dueDate: "2023-07-30", priority: 3}
+                  ]
 
     const Task = (title, description, dueDate, priority) => {
         return {title, description, dueDate, priority}
@@ -79,7 +82,6 @@ const Tasks = (() => {
             InputFormDisplay.inputFormWrapper.className = "hidden"
             RenderTasks.append(details.title, details.description, details.dueDate, details.priority)
             PriorityMark.priorityIndicators()
-            // DateFormatter.appendFormmatedDate()
         }
     })
 
@@ -87,6 +89,10 @@ const Tasks = (() => {
         const newTask = Task(details.title, details.description, details.dueDate, details.priority)
         tasks.push(newTask)
     }
+
+    const getTasks = () => tasks
+
+    return{getTasks}
 })()
 
 const RenderTasks= (()=>{
@@ -110,7 +116,7 @@ const RenderTasks= (()=>{
 
         title.textContent = info1
         description.textContent = info2
-        const formmated = format(new Date(info3.split("-")[0], info3.split("-")[1], info3.split("-")[2]), "PP")
+        const formmated = format(new Date(info3.split("-")[0], (info3.split("-")[1] - 1), info3.split("-")[2]), "PP")
         dueDate.textContent = formmated;
         priority.textContent = info4
         priority.className = "priority"
@@ -154,10 +160,11 @@ const PriorityMark = (() => {
 })()
 
 const formatDemoDates = (()=>{
+
     const demoDates = document.querySelectorAll(".task-text > p")
     demoDates.forEach(item => {
         const container = item.textContent.split("-")
-        item.textContent =  format(new Date(container[0], container[1], container[2]), "PP")
+        item.textContent =  format(new Date(container[0], container[1] - 1, container[2]), "PP")
     })
 
 })()
@@ -165,10 +172,7 @@ const formatDemoDates = (()=>{
 
 
 
-
-
-
-
+export {Tasks}       
 
 
 

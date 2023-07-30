@@ -230,6 +230,7 @@ form select{
     gap: 10px;
     padding: 0 10px;
     border: 1px solid rgb(128, 128, 128, .4);
+    height: 75px;
 }
 .task-text{
     display: flex;

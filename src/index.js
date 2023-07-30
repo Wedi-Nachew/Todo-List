@@ -1,5 +1,6 @@
 import "./style.css"
 
+
 const inputForm = document.querySelector("form")
 
 
@@ -16,10 +17,22 @@ const InputFormDisplay = (()=>{
             inputFormWrapper.className = "hidden"
         }
     })
-    
-    return {inputFormWrapper}
+
+    const resetInputFields=()=>{
+        inputForm.childNodes.forEach(child => {
+            if(child.nodeName !== "DIV"){
+                child.value = ""
+            }else if(child.nodeName === "DIV"){
+               child.childNodes.forEach(grandChild => grandChild.value = "")
+            }
+        })
+    }
+
+    resetInputFields()
+    return {inputFormWrapper, resetInputFields}
     
 })()
+
 
 const TaskInfoReceiver = (()=>{
 
@@ -61,7 +74,7 @@ const Tasks = (() => {
         if(details.title && details.dueDate && details.priority){
             event.preventDefault()
             addTask()
-            inputForm.childNodes.forEach(input => input.value = "")
+            InputFormDisplay.resetInputFields()
             InputFormDisplay.inputFormWrapper.className = "hidden"
             RenderTasks.append(details.title, details.description, details.dueDate, details.priority)
             PriorityMark.priorityIndicators()
@@ -159,7 +172,7 @@ const PriorityMark = (() => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    inputForm.childNodes.forEach(input => input.value = "")
+    // inputForm.childNodes.forEach(input => input.value = "")
     // dateSelect.childNodes.forEach(field => field.value = "")
 
 })

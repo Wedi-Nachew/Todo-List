@@ -1,5 +1,5 @@
 import "./style.css"
-
+import { format } from 'date-fns'
 
 const inputForm = document.querySelector("form")
 
@@ -7,20 +7,18 @@ const inputForm = document.querySelector("form")
 const InputFormDisplay = (()=>{
     const addTask = document.querySelector(".header > button")
     const inputFormWrapper = document.querySelector("#form-wrapper")
-    const div = document.querySelector("form div")
-    const dropDown = window.getComputedStyle(div, "::after").content
-    console.log(dropDown)
+  
+    const eventHandlers = ()=>{
+        addTask.addEventListener("click", ()=>{
+            inputFormWrapper.className = "show"
+        })
 
-    addTask.addEventListener("click", ()=>{
-        inputFormWrapper.className = "show"
-    })
-
-    inputFormWrapper.addEventListener("click", (event)=>{
-        if(!inputForm.contains(event.target)){
-            inputFormWrapper.className = "hidden"
-        }
-    })
-
+        inputFormWrapper.addEventListener("click", (event)=>{
+            if(!inputForm.contains(event.target)){
+                inputFormWrapper.className = "hidden"
+            }
+        })
+   }
     const resetInputFields=()=>{
         inputForm.childNodes.forEach(child => {
             if(child.nodeName !== "DIV"){
@@ -31,13 +29,11 @@ const InputFormDisplay = (()=>{
         })
     }
 
-
-
+    eventHandlers()
     resetInputFields()
     return {inputFormWrapper, resetInputFields}
     
 })()
-
 
 const TaskInfoReceiver = (()=>{
 
@@ -83,6 +79,7 @@ const Tasks = (() => {
             InputFormDisplay.inputFormWrapper.className = "hidden"
             RenderTasks.append(details.title, details.description, details.dueDate, details.priority)
             PriorityMark.priorityIndicators()
+            // DateFormatter.appendFormmatedDate()
         }
     })
 
@@ -113,7 +110,8 @@ const RenderTasks= (()=>{
 
         title.textContent = info1
         description.textContent = info2
-        dueDate.textContent = info3
+        const formmated = format(new Date(info3.split("-")[0], info3.split("-")[1], info3.split("-")[2]), "PPP")
+        dueDate.textContent = formmated;
         priority.textContent = info4
         priority.className = "priority"
 
@@ -135,7 +133,6 @@ const PriorityMark = (() => {
     const main = document.querySelector(".main")
 
     function priorityIndicators(){
-        
         main.childNodes.forEach(child => {
             if(child.className == "task"){child.childNodes.forEach(grandChild => {
                     if(grandChild.className == "priority" && grandChild.textContent == 1){
@@ -153,9 +150,20 @@ const PriorityMark = (() => {
    }
 
    priorityIndicators()
-
    return{priorityIndicators}
 })()
+
+const formatDemoDates = (()=>{
+    const demoDates = document.querySelectorAll(".task-text > p")
+    demoDates.forEach(item => {
+        const container = item.textContent.split("-")
+        // console.log(container)
+        item.textContent =  format(new Date(container[0], container[1], container[2]), "PPP")
+    })
+
+})()
+
+
 
 
 

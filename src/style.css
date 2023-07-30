@@ -141,6 +141,7 @@ form{
     padding: 15px;
     background-color: #fff;
 }
+
 input, textarea{
     padding: 5px 10px;
 }
@@ -190,11 +191,12 @@ form div button{
 form div{
     position: relative;
 }
-form div::after{
-    content: url(../src/icons/drop-down.svg);
-    position: absolute;
-    left: 250px;
-    top: 7px;
+form select{
+    padding-top: 3px;
+    background-image: url(../src/icons/drop-down.svg);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 38px;
 }
 .show{
     visibility: visible;

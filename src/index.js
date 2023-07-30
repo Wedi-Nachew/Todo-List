@@ -110,7 +110,7 @@ const RenderTasks= (()=>{
 
         title.textContent = info1
         description.textContent = info2
-        const formmated = format(new Date(info3.split("-")[0], info3.split("-")[1], info3.split("-")[2]), "PPP")
+        const formmated = format(new Date(info3.split("-")[0], info3.split("-")[1], info3.split("-")[2]), "PP")
         dueDate.textContent = formmated;
         priority.textContent = info4
         priority.className = "priority"
@@ -157,8 +157,7 @@ const formatDemoDates = (()=>{
     const demoDates = document.querySelectorAll(".task-text > p")
     demoDates.forEach(item => {
         const container = item.textContent.split("-")
-        // console.log(container)
-        item.textContent =  format(new Date(container[0], container[1], container[2]), "PPP")
+        item.textContent =  format(new Date(container[0], container[1], container[2]), "PP")
     })
 
 })()

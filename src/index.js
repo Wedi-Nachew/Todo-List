@@ -3,6 +3,7 @@ import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
 import { Today as todayTasks } from "./today.js"
 import { UpcomingTasks } from "./upcoming.js"
 import { ThisWeekTasks } from "./this-week.js"
+import add from "./icons/add.svg"
 
 
 const inputForm = document.querySelector("form")
@@ -68,8 +69,10 @@ const Tasks = (() => {
     const content = document.querySelector(".content")
     const details = TaskInfoReceiver.getTaskInfo()
     const tasks = [
-                    { title: "jjhk", description: "hjjh", dueDate: "2023-07-19", priority: 1},
-                    {title: "hjhjhjhj", description: "j", dueDate: "2023-07-31", priority: 3}
+                    {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1},
+                    {title: "Today", description: "today", dueDate: "2023-07-31", priority: 2},
+                    {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3},
+                    {title: "This Week", description: "this week", dueDate: "2023-08-03", priority: 4}
                   ]
 
     const Task = (title, description, dueDate, priority) => {
@@ -114,12 +117,16 @@ const RenderTasks= (()=>{
         const description = document.createElement("p")
         const dueDate = document.createElement("p")
         const priority = document.createElement("p")
+        const edit = document.createElement("img")
+        const remove = document.createElement("img")
 
         task.className = "task"
         taskText.className = "task-text"
         checkBox.type = "checkbox"
         checkBox.value = "completed"
         checkBox.id = "task-completion"
+        edit.src = add
+        remove.src = add
 
         title.textContent = info1
         description.textContent = info2
@@ -131,6 +138,8 @@ const RenderTasks= (()=>{
         div.appendChild(title)
         div.appendChild(description)
         taskText.appendChild(div)
+        taskText.appendChild(edit)
+        taskText.appendChild(remove)
         taskText.appendChild(dueDate)
         task.appendChild(checkBox)
         task.appendChild(taskText)
@@ -156,7 +165,7 @@ const PriorityMark = (() => {
                     }else if(grandChild.className == "priority" && grandChild.textContent == 3){
                         grandChild.parentNode.style.cssText = "border-left: 12px solid #06d6a0;"
                     }else if(grandChild.className == "priority" && grandChild.textContent == 4){
-                        grandChild.parentNode.style.cssText = "border-left: 12px solid #06d6a0;"
+                        grandChild.parentNode.style.cssText = "border-left: 12px solid #1b263b;"
                     }
                 })
             }

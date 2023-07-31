@@ -239,6 +239,7 @@ form select{
     justify-content: center;
     padding-top: 15px;
     align-items: center;
+    gap : 20px;
 }
 .task-text div p{
     margin-top: 0;
@@ -253,10 +254,24 @@ form select{
     margin-bottom: 0;
     font-size: 1.1rem;
 }
-.task-text > p{
+.task-text > img:first-of-type{
     margin-left: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.task-text > img:last-of-type{
+    margin-bottom: 20px;
+    margin-right: 40px;
+    cursor: pointer;
+}
+.task-text img:hover{
+    height: 27px;
+}
+
+.task-text > p{
+    width: 60px;
     font-size: 1.1rem;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 input[type="checkbox"]{
     width: 45px;

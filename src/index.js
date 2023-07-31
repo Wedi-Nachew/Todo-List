@@ -2,8 +2,11 @@ import "./style.css"
 import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
 import { Today as todayTasks } from "./today.js"
 import { UpcomingTasks } from "./upcoming.js"
+import editIcon from "./icons/pencil.svg"
 import { ThisWeekTasks } from "./this-week.js"
-import add from "./icons/add.svg"
+import removeIcon from "./icons/trash-can.svg"
+
+
 
 
 const inputForm = document.querySelector("form")
@@ -125,8 +128,8 @@ const RenderTasks= (()=>{
         checkBox.type = "checkbox"
         checkBox.value = "completed"
         checkBox.id = "task-completion"
-        edit.src = add
-        remove.src = add
+        edit.src = editIcon
+        remove.src = removeIcon
 
         title.textContent = info1
         description.textContent = info2

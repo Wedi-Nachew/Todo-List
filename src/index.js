@@ -1,6 +1,8 @@
 import "./style.css"
 import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
-import {Today as todayTasks} from "./today.js"
+import { Today as todayTasks } from "./today.js"
+import { UpcomingTasks } from "./upcoming.js"
+import { ThisWeekTasks } from "./this-week.js"
 
 
 const inputForm = document.querySelector("form")
@@ -184,15 +186,18 @@ const FilterTasks = (() => {
 
         taskMenu.addEventListener("click", (event)=>{
             if(event.target.nodeName == "BUTTON"){
+
                 while(content.firstChild){ content.removeChild(content.firstChild)}
                 if(event.target.textContent.includes("Home")){
                     renderFilteredTasks(Tasks.getTasks())
-                    header.textContent = "Home"
                 }else if(event.target.textContent.includes("Today")){
                     renderFilteredTasks(todayTasks.determineDueDate())
-                    header.textContent = "Today"
+                }else if(event.target.textContent.includes("Upcoming")){
+                    renderFilteredTasks(UpcomingTasks.determineFutureEvent())
+                }else if(event.target.textContent.includes("This Week")){
+                    renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
                 }
-    
+                header.textContent = event.target.textContent
                 PriorityMark.priorityIndicators()
            
             }

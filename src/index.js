@@ -1,10 +1,9 @@
 import "./style.css"
-import { format, isEqual, lightFormat, parseISO } from 'date-fns'
-import {Today as module} from "./today.js"
+import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
+import {Today as todayTasks} from "./today.js"
 
 
 const inputForm = document.querySelector("form")
-
 
 
 const InputFormDisplay = (()=>{
@@ -64,10 +63,11 @@ const TaskInfoReceiver = (()=>{
 
 const Tasks = (() => {
     const add = document.querySelector(".add-btn")
+    const content = document.querySelector(".content")
     const details = TaskInfoReceiver.getTaskInfo()
     const tasks = [
                     { title: "jjhk", description: "hjjh", dueDate: "2023-07-19", priority: 1},
-                    {title: "hjhjhjhj", description: "j", dueDate: "2023-07-30", priority: 3}
+                    {title: "hjhjhjhj", description: "j", dueDate: "2023-07-31", priority: 3}
                   ]
 
     const Task = (title, description, dueDate, priority) => {
@@ -80,8 +80,12 @@ const Tasks = (() => {
             addTask()
             InputFormDisplay.resetInputFields()
             InputFormDisplay.inputFormWrapper.className = "hidden"
-            RenderTasks.append(details.title, details.description, details.dueDate, details.priority)
+            while(content.firstChild){ content.removeChild(content.firstChild)}
+            for(const task of tasks){
+                RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
+            }
             PriorityMark.priorityIndicators()
+            
         }
     })
 
@@ -99,6 +103,7 @@ const RenderTasks= (()=>{
     
     const append = (info1, info2, info3, info4)=> {
         const main = document.querySelector(".main")
+        const content = document.querySelector(".content")
         const task = document.createElement("div")
         const checkBox = document.createElement("input")
         const taskText = document.createElement("div")
@@ -128,7 +133,8 @@ const RenderTasks= (()=>{
         task.appendChild(checkBox)
         task.appendChild(taskText)
         task.appendChild(priority)
-        main.appendChild(task)
+        content.appendChild(task)
+        main.appendChild(content)
 
     }
 
@@ -136,10 +142,10 @@ const RenderTasks= (()=>{
 })()
 
 const PriorityMark = (() => {
-    const main = document.querySelector(".main")
+    const content = document.querySelector(".content")
 
     function priorityIndicators(){
-        main.childNodes.forEach(child => {
+        content.childNodes.forEach(child => {
             if(child.className == "task"){child.childNodes.forEach(grandChild => {
                     if(grandChild.className == "priority" && grandChild.textContent == 1){
                         grandChild.parentNode.style.cssText = "border-left: 12px solid #ef476f;"
@@ -153,7 +159,7 @@ const PriorityMark = (() => {
                 })
             }
         })
-   }
+    }
 
    priorityIndicators()
    return{priorityIndicators}
@@ -169,6 +175,39 @@ const formatDemoDates = (()=>{
 
 })()
 
+const FilterTasks = (() => {
+    const header = document.querySelector(".main h1")
+    const content = document.querySelector(".content")
+    const taskMenu = document.querySelector(".task-menu")
+   
+    const eventHandlers = (() => {
+
+        taskMenu.addEventListener("click", (event)=>{
+            if(event.target.nodeName == "BUTTON"){
+                while(content.firstChild){ content.removeChild(content.firstChild)}
+                if(event.target.textContent.includes("Home")){
+                    renderFilteredTasks(Tasks.getTasks())
+                    header.textContent = "Home"
+                }else if(event.target.textContent.includes("Today")){
+                    renderFilteredTasks(todayTasks.determineDueDate())
+                    header.textContent = "Today"
+                }
+    
+                PriorityMark.priorityIndicators()
+           
+            }
+        })
+    })()
+
+
+    function renderFilteredTasks(events){
+        for(const task of events){
+            RenderTasks.append(task.title, task.description, task.dueDate, task.priority)        
+        }
+    }
+
+
+} )()
 
 
 

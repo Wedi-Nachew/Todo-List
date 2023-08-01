@@ -3,9 +3,8 @@ import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
 import removeIcon from "./icons/delete.svg"
 import { Today as todayTasks } from "./today.js"
 import { UpcomingTasks } from "./upcoming.js"
-import editIcon from "./icons/pencil.svg"
 import { ThisWeekTasks } from "./this-week.js"
-
+import editIcon from "./icons/pencil.svg"
 
 
 
@@ -105,7 +104,7 @@ const Tasks = (() => {
 
     const getTasks = () => tasks
 
-    return{getTasks}
+    return{getTasks, tasks}
 })()
 
 const RenderTasks= (()=>{
@@ -182,8 +181,6 @@ const PriorityMark = (() => {
    return{priorityIndicators}
 })()
 
-
-
 const FilterTasks = (() => {
     const header = document.querySelector(".main h1")
     const content = document.querySelector(".content")
@@ -211,6 +208,7 @@ const FilterTasks = (() => {
         })
 
         renderFilteredTasks(Tasks.getTasks())
+        PriorityMark.priorityIndicators()
     })()
 
 
@@ -233,6 +231,13 @@ const manageTasks = (() =>{
                 console.log("edit")
             }else if(event.target.className === "remove"){
                 content.removeChild(event.target.parentNode.parentNode)
+                Tasks.tasks.forEach(task => {
+                    if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
+                        Tasks.tasks.splice(Tasks.tasks.indexOf(task), 1)
+                    }
+                })
+                
+                // console.log(event.target.parentNode.firstChild.firstChild.textContent)
             }
         })
     }
@@ -241,7 +246,7 @@ const manageTasks = (() =>{
         console.log("Delete")
     }
 
-    eventHandlers(event)
+    eventHandlers()
 })()
 
 

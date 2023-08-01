@@ -265,7 +265,10 @@ form select{
     cursor: pointer;
 }
 .task-text img:hover{
-    height: 27px;
+    height: 25.5px;
+    width: 25.5px;
+    box-shadow: 0 0 5px hsl(0, 0%, 60%);
+    border-radius: 50%;
 }
 
 .task-text > p{

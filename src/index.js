@@ -1,10 +1,11 @@
 import "./style.css"
 import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
+import removeIcon from "./icons/delete.svg"
 import { Today as todayTasks } from "./today.js"
 import { UpcomingTasks } from "./upcoming.js"
 import editIcon from "./icons/pencil.svg"
 import { ThisWeekTasks } from "./this-week.js"
-import removeIcon from "./icons/trash-can.svg"
+
 
 
 
@@ -73,7 +74,7 @@ const Tasks = (() => {
     const details = TaskInfoReceiver.getTaskInfo()
     const tasks = [
                     {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1},
-                    {title: "Today", description: "today", dueDate: "2023-07-31", priority: 2},
+                    {title: "Today", description: "today", dueDate: "2023-08-01", priority: 2},
                     {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3},
                     {title: "This Week", description: "this week", dueDate: "2023-08-03", priority: 4}
                   ]
@@ -129,7 +130,9 @@ const RenderTasks= (()=>{
         checkBox.value = "completed"
         checkBox.id = "task-completion"
         edit.src = editIcon
+        edit.className = "edit"
         remove.src = removeIcon
+        remove.className = "remove"
 
         title.textContent = info1
         description.textContent = info2
@@ -179,15 +182,7 @@ const PriorityMark = (() => {
    return{priorityIndicators}
 })()
 
-const formatDemoDates = (()=>{
 
-    const demoDates = document.querySelectorAll(".task-text > p")
-    demoDates.forEach(item => {
-        const container = item.textContent.split("-")
-        item.textContent =  format(new Date(container[0], container[1] - 1, container[2]), "PP")
-    })
-
-})()
 
 const FilterTasks = (() => {
     const header = document.querySelector(".main h1")
@@ -214,6 +209,8 @@ const FilterTasks = (() => {
            
             }
         })
+
+        renderFilteredTasks(Tasks.getTasks())
     })()
 
 
@@ -226,6 +223,26 @@ const FilterTasks = (() => {
 
 } )()
 
+const manageTasks = (() =>{
+    const content = document.querySelector(".content")
+    
+    const eventHandlers = () => {
+
+        content.addEventListener("click", (event) => {
+           if(event.target.className === "edit"){
+                console.log("edit")
+            }else if(event.target.className === "remove"){
+                content.removeChild(event.target.parentNode.parentNode)
+            }
+        })
+    }
+
+    function removeTask() {
+        console.log("Delete")
+    }
+
+    eventHandlers(event)
+})()
 
 
 export {Tasks}       

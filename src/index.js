@@ -15,9 +15,12 @@ const inputForm = document.querySelector("form")
 const InputFormDisplay = (()=>{
     const addTask = document.querySelector(".header > button")
     const inputFormWrapper = document.querySelector("#form-wrapper")
+    const formInputBtn = document.querySelector("form div button")
   
     const eventHandlers = ()=>{
         addTask.addEventListener("click", ()=>{
+            RenderTasks.addBtn()
+            resetInputFields()
             inputFormWrapper.className = "show"
         })
 
@@ -82,8 +85,14 @@ const Tasks = (() => {
         return {title, description, dueDate, priority}
     }
 
-    add.addEventListener("click", (event)=>{
-        if(details.title && details.dueDate && details.priority){
+    add.addEventListener("click", handler)
+
+    function addTask(){
+            const newTask = Task(details.title, details.description, details.dueDate, details.priority)
+            tasks.push(newTask) 
+    }
+    function handler(event){
+        if(details.title && details.dueDate && details.priority && manageTasks.getEditStatus() == "No"){
             event.preventDefault()
             addTask()
             InputFormDisplay.resetInputFields()
@@ -93,22 +102,25 @@ const Tasks = (() => {
                 RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
             }
             PriorityMark.priorityIndicators()
-            
+        }else if(details.title && details.dueDate && details.priority && manageTasks.getEditStatus() == "yes"){
+            InputFormDisplay.resetInputFields()
+            InputFormDisplay.inputFormWrapper.className = "hidden"
+            while(content.firstChild){ content.removeChild(content.firstChild)}
+            for(const task of Tasks.tasks){
+                RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
+            }
+            PriorityMark.priorityIndicators()
         }
-    })
-
-    function addTask(){
-        const newTask = Task(details.title, details.description, details.dueDate, details.priority)
-        tasks.push(newTask)
     }
 
     const getTasks = () => tasks
 
-    return{getTasks, tasks}
+    return{getTasks, tasks, handler}
 })()
 
 const RenderTasks= (()=>{
-    
+    const inputDiv = inputForm.querySelector("div")
+
     const append = (info1, info2, info3, info4)=> {
         const main = document.querySelector(".main")
         const content = document.querySelector(".content")
@@ -143,9 +155,9 @@ const RenderTasks= (()=>{
         div.appendChild(title)
         div.appendChild(description)
         taskText.appendChild(div)
+        taskText.appendChild(dueDate)
         taskText.appendChild(edit)
         taskText.appendChild(remove)
-        taskText.appendChild(dueDate)
         task.appendChild(checkBox)
         task.appendChild(taskText)
         task.appendChild(priority)
@@ -153,8 +165,26 @@ const RenderTasks= (()=>{
         main.appendChild(content)
 
     }
+    const addBtn = () => {
+        removeAnyButton()
+        const addTask = document.createElement("button")
+        addTask.textContent = "Add Task"
+        addTask.className = "add-btn"
+        inputDiv.appendChild(addTask)
+    }
+    const saveBtn = () => {
+        removeAnyButton()
+        const saveChanges = document.createElement("button")
+        saveChanges.textContent = "Save Changes"
+        saveChanges.className = "save-btn"
+        inputDiv.appendChild(saveChanges)
+    }
 
-   return{append}
+    function removeAnyButton(){
+        inputDiv.childNodes.forEach(child => (child.nodeName == "BUTTON") ? inputDiv.removeChild(child) : false)
+    }
+
+   return{append, addBtn, saveBtn}
 })()
 
 const PriorityMark = (() => {
@@ -223,30 +253,78 @@ const FilterTasks = (() => {
 
 const manageTasks = (() =>{
     const content = document.querySelector(".content")
+    let edit = "No"
+    const getEditStatus = () => edit
     
     const eventHandlers = () => {
 
         content.addEventListener("click", (event) => {
            if(event.target.className === "edit"){
-                console.log("edit")
+                edit = "yes"
+                editTask(event)
             }else if(event.target.className === "remove"){
-                content.removeChild(event.target.parentNode.parentNode)
-                Tasks.tasks.forEach(task => {
-                    if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
-                        Tasks.tasks.splice(Tasks.tasks.indexOf(task), 1)
-                    }
-                })
-                
-                // console.log(event.target.parentNode.firstChild.firstChild.textContent)
+                removeTask(event)
             }
         })
     }
-
-    function removeTask() {
-        console.log("Delete")
+    function removeTask(event) {
+        content.removeChild(event.target.parentNode.parentNode)
+        Tasks.tasks.forEach(task => {
+            if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
+                Tasks.tasks.splice(Tasks.tasks.indexOf(task), 1)
+            }
+        })
+    }
+    function editTask(event){
+        InputFormDisplay.inputFormWrapper.className = "show"
+        RenderTasks.saveBtn()
+                Tasks.tasks.forEach(task => {
+                    if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
+                        inputForm.childNodes.forEach(child => {
+                        if(child.nodeName !== "DIV" && child.nodeName == "INPUT"){
+                            child.value = task["title"]
+                        }else if(child.nodeName !== "DIV" && child.nodeName == "TEXTAREA"){
+                            child.value = task["description"]
+                        }else if(child.nodeName === "DIV"){
+                            child.childNodes.forEach(grandChild => {
+                               if(grandChild.nodeName === "INPUT"){
+                                    grandChild.value = task["dueDate"]
+                                }else if(grandChild.nodeName === "SELECT"){
+                                    grandChild.value = task["priority"]
+                                }else if(grandChild.className == "save-btn"){
+                                    grandChild.addEventListener("click", (event) => {
+                                        event.preventDefault()
+                                        TaskInfoReceiver.getTaskInfo()["title"] != undefined 
+                                            ? task["title"] = TaskInfoReceiver.getTaskInfo()["title"] 
+                                            : false
+                                        TaskInfoReceiver.getTaskInfo()["description"] != undefined 
+                                            ? task["description"] = TaskInfoReceiver.getTaskInfo()["description"] 
+                                            : false
+                                        TaskInfoReceiver.getTaskInfo()["dueDate"] != undefined 
+                                            ? task["dueDate"] = TaskInfoReceiver.getTaskInfo()["dueDate"] 
+                                            : false
+                                        TaskInfoReceiver.getTaskInfo()["priority"] != undefined 
+                                            ? task["priority"] = TaskInfoReceiver.getTaskInfo()["priority"] 
+                                            :false
+                                        
+                                        InputFormDisplay.resetInputFields()
+                                        InputFormDisplay.inputFormWrapper.className = "hidden"
+                                        while(content.firstChild){ content.removeChild(content.firstChild)}
+                                        for(const task of Tasks.tasks){
+                                            RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
+                                        }
+                                        PriorityMark.priorityIndicators()
+                                    })
+                                }
+                            })
+                        }
+                        })
+                    }
+                })
     }
 
     eventHandlers()
+    return{getEditStatus}
 })()
 
 

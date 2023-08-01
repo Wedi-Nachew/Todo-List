@@ -180,12 +180,12 @@ form div{
 }
 form div button{
     margin-left: auto;
-    background-color: #7ae582;
+    background-color: #1982c4;
     border: none;
-    color: #000;
+    color: #fff;
     font-weight: 600;
     font-size: 1.1rem;
-    padding: 9px 18px;
+    width: 150px;
 }
 form div{
     position: relative;
@@ -255,7 +255,6 @@ form select{
     font-size: 1.1rem;
 }
 .task-text > img:first-of-type{
-    margin-left: auto;
     margin-bottom: 20px;
     cursor: pointer;
 }
@@ -272,6 +271,7 @@ form select{
 }
 
 .task-text > p{
+    margin-left: auto;
     width: 60px;
     font-size: 1.1rem;
     padding-bottom: 10px;
@@ -289,6 +289,7 @@ input[type="checkbox"]:checked{
 .priority{
     display: none;
 }
+
 
 
 

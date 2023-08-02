@@ -278,15 +278,15 @@ form select{
 input[type="checkbox"]{
     width: 45px;
 }
-input[type="checkbox"]:not(:checked){
+input[type="checkbox"]{
     content: url("../src/icons/unchecked.svg");
 }
-input[type="checkbox"]:checked,
-.checked{
+
+#task-completion.checked{
     content: url("../src/icons/checked.svg");
     width: 45px;
 }
-.priority{
+.priority, .status{
     display: none;
 }
 .side-bar button.active{
@@ -295,7 +295,7 @@ input[type="checkbox"]:checked,
     box-shadow: #000
 }
 .task.completed{
-    color:hsl(0, 0%, 60%)
+    color:hsl(0, 0%, 60%);
 }
 
 

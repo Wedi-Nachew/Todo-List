@@ -67,6 +67,7 @@ const TaskInfoReceiver = (()=>{
         }
     })
     
+    
     return {getTaskInfo}
 })()
 
@@ -75,7 +76,7 @@ const Tasks = (() => {
     const content = document.querySelector(".content")
     const details = TaskInfoReceiver.getTaskInfo()
     const tasks = [
-                    {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1, status :"uncompleted"},
+                    {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1, status :"completed"},
                     {title: "Today", description: "today", dueDate: "2023-08-01", priority: 2, status :"uncompleted"},
                     {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3, status :"uncompleted"},
                     {title: "This Week", description: "this week", dueDate: "2023-08-03", priority: 4, status :"uncompleted"}
@@ -106,7 +107,7 @@ const Tasks = (() => {
             InputFormDisplay.inputFormWrapper.className = "hidden"
             while(content.firstChild){ content.removeChild(content.firstChild)}
             for(const task of tasks){
-                RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
+                RenderTasks.append(task.title, task.description, task.dueDate, task.priority, task.status)
             }
             PriorityMark.priorityIndicators()
         }
@@ -120,7 +121,7 @@ const Tasks = (() => {
 const RenderTasks= (()=>{
     const inputDiv = inputForm.querySelector("div")
 
-    const append = (info1, info2, info3, info4)=> {
+    const append = (info1, info2, info3, info4, info5)=> {
         const main = document.querySelector(".main")
         const content = document.querySelector(".content")
         const task = document.createElement("div")
@@ -131,6 +132,7 @@ const RenderTasks= (()=>{
         const description = document.createElement("p")
         const dueDate = document.createElement("p")
         const priority = document.createElement("p")
+        const status = document.createElement("p")
         const edit = document.createElement("img")
         const remove = document.createElement("img")
 
@@ -150,6 +152,8 @@ const RenderTasks= (()=>{
         dueDate.textContent = formmated;
         priority.textContent = info4
         priority.className = "priority"
+        status.textContent = info5
+        status.className = "status"
 
         div.appendChild(title)
         div.appendChild(description)
@@ -160,6 +164,7 @@ const RenderTasks= (()=>{
         task.appendChild(checkBox)
         task.appendChild(taskText)
         task.appendChild(priority)
+        task.appendChild(status)
         content.appendChild(task)
         main.appendChild(content)
 
@@ -178,12 +183,17 @@ const RenderTasks= (()=>{
         saveChanges.className = "save-btn"
         inputDiv.appendChild(saveChanges)
     }
+    const taskStatus = (status) => {
+        for(const task in Tasks.tasks){
+            console.log(task)
+        }
+    }
 
     function removeAnyButton(){
         inputDiv.childNodes.forEach(child => (child.nodeName == "BUTTON") ? inputDiv.removeChild(child) : false)
     }
 
-   return{append, addBtn, saveBtn}
+   return{append, addBtn, saveBtn, taskStatus}
 })()
 
 const PriorityMark = (() => {
@@ -191,7 +201,8 @@ const PriorityMark = (() => {
 
     function priorityIndicators(){
         content.childNodes.forEach(child => {
-            if(child.className == "task"){child.childNodes.forEach(grandChild => {
+            if(child.classList == "task" || child.classList =="task completed"){
+                child.childNodes.forEach(grandChild => {
                     if(grandChild.className == "priority" && grandChild.textContent == 1){
                         grandChild.parentNode.style.cssText = "border-left: 12px solid #ef476f;"
                     }else if(grandChild.className == "priority" && grandChild.textContent == 2){
@@ -202,14 +213,71 @@ const PriorityMark = (() => {
                         grandChild.parentNode.style.cssText = "border-left: 12px solid #1b263b;"
                     }
                 })
+                
             }
+            
         })
     }
 
    priorityIndicators()
    return{priorityIndicators}
 })()
+const taskStatus = (() => {
+    const content = document.querySelector(".content")
 
+    function statusIndicator(){
+        content.childNodes.forEach(child => {
+            if(child.className == "task"){child.childNodes.forEach(grandChild => {
+                    if(grandChild.className == "status" && grandChild.textContent == "uncompleted"){
+                        grandChild.parentNode.classList.remove("completed")
+                    }else if(grandChild.className == "status" && grandChild.textContent == "completed"){
+                        grandChild.parentNode.classList.add("completed")
+                        child.firstChild.className = "checked"
+                    }
+                })
+            }
+        })
+    }
+
+    const changeStatus = () => {
+        content.addEventListener("click", (event) => {
+            if(event.target.nodeName == "INPUT" && event.target.className == "checked"){
+                event.target.parentNode.classList.remove("completed")
+                event.target.parentNode.childNodes.forEach(item => {
+                    if(item.className == "task-text"){
+                        Tasks.tasks.forEach(task => {
+                            if(Object.values(task).includes(item.firstChild.firstChild.textContent)){
+                                task["status"] = "uncompleted"
+                            }
+                        })
+                    }
+                });
+                event.target.parentNode.lastChild.textContent = "uncompleted"
+                event.target.classList.remove("checked")
+            }else if(event.target.nodeName == "INPUT" && !event.target.className){
+                event.target.parentNode.classList.add("completed")
+                event.target.parentNode.childNodes.forEach(item => {
+                    if(item.className == "task-text"){
+                        Tasks.tasks.forEach(task => {
+                            if(Object.values(task).includes(item.firstChild.firstChild.textContent)){
+                                task["status"] = "completed"
+                            }
+                        })
+                    }
+               
+                });
+                event.target.parentNode.lastChild.textContent = "completed"
+                event.target.className = "checked"
+            }
+            console.log(!event.target.className)
+        })
+    }
+
+
+    changeStatus()
+    statusIndicator()
+    return{statusIndicator, changeStatus}
+})()
 const FilterTasks = (() => {
     const header = document.querySelector(".main h1")
     const content = document.querySelector(".content")
@@ -240,24 +308,25 @@ const FilterTasks = (() => {
                     renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
                 }
                 header.textContent = event.target.textContent
+                taskStatus.statusIndicator()
                 PriorityMark.priorityIndicators()
-                console.log( Tasks.getTasks())
+                
             }
         })
 
         renderFilteredTasks(Tasks.getTasks())
-        // taskMenu.querySelector("button").classList.add("active")
+        taskMenu.querySelector("button").classList.add("active")
+        taskStatus.statusIndicator()
         PriorityMark.priorityIndicators()
+
         
     })()
 
     function renderFilteredTasks(events){
         for(const task of events){
-            RenderTasks.append(task.title, task.description, task.dueDate, task.priority)        
+            RenderTasks.append(task.title, task.description, task.dueDate, task.priority, task.status)        
         }
     }
-
-
 })()
 
 const manageTasks = (() =>{
@@ -266,7 +335,6 @@ const manageTasks = (() =>{
     const getEditStatus = () => edit
     
     const eventHandlers = () => {
-
         content.addEventListener("click", (event) => {
             if(event.target.className === "edit"){
                 edit = "yes"
@@ -274,8 +342,6 @@ const manageTasks = (() =>{
             }else if(event.target.className === "remove"){
                 removeTask(event)
             }
-
-            
         })
     }
     function removeTask(event) {
@@ -351,17 +417,7 @@ const manageTasks = (() =>{
     return{getEditStatus, removeTask}
 })()
 
-function taskCompletion(){
-    const checkBox = document.querySelector("#task-completion")
-    checkBox.addEventListener("click", () => {
-        if(checkBox.checked){
-            checkBox.parentNode.classList.add("completed")
-        }else if(!checkBox.checked){
-            checkBox.parentNode.classList.remove("completed")
-        }
-    })
 
-}
 export {Tasks}       
 
 

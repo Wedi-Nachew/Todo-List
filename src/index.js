@@ -71,8 +71,9 @@ const TaskInfoReceiver = (()=>{
     return {getTaskInfo}
 })()
 
-const Tasks = (() => {
+export const Tasks = (() => {
     const add = document.querySelector(".header button")
+    const sideBar = document.querySelector(".side-bar")
     const content = document.querySelector(".content")
     const details = TaskInfoReceiver.getTaskInfo()
     const tasks = [
@@ -89,7 +90,9 @@ const Tasks = (() => {
 
     const eventHandlers = () => {
         inputForm.addEventListener("click", (event)=>{
-            if(event.target.className == "add-btn"){
+            if(event.target.className == "add-btn" && details.title && details.dueDate && details.priority){
+                event.preventDefault()
+                addTask()
                 handler(event)
             }
        })
@@ -100,20 +103,28 @@ const Tasks = (() => {
             tasks.push(newTask) 
     }
     function handler(event){
-        if(details.title && details.dueDate && details.priority){
-            event.preventDefault()
-            addTask()
             InputFormDisplay.resetInputFields()
             InputFormDisplay.inputFormWrapper.className = "hidden"
             while(content.firstChild){ content.removeChild(content.firstChild)}
-            for(const task of tasks){
-                RenderTasks.append(task.title, task.description, task.dueDate, task.priority, task.status)
-            }
+            sideBar.childNodes.forEach(child => {
+                child.childNodes.forEach(grandChild => {
+                    if(grandChild.classList == "active" && grandChild.textContent.includes("Home")){
+                        FilterTasks.renderFilteredTasks(Tasks.getTasks())
+                    }else if(grandChild.classList == "active" && grandChild.textContent.includes("Today")){
+                        FilterTasks.renderFilteredTasks(todayTasks.determineDueDate())
+                    }else if(grandChild.classList == "active" && grandChild.textContent.includes("Upcoming")){
+                        FilterTasks.renderFilteredTasks(UpcomingTasks.determineFutureEvent())
+                    }else if(grandChild.classList == "active" && grandChild.textContent.includes("This Week")){
+                        FilterTasks.renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
+                    }
+                
+                })
+            })
+            taskStatus.statusIndicator()
             PriorityMark.priorityIndicators()
-        }
     }
-
     const getTasks = () => tasks
+
     eventHandlers()
     return{getTasks, tasks, handler}
 })()
@@ -269,7 +280,6 @@ const taskStatus = (() => {
                 event.target.parentNode.lastChild.textContent = "completed"
                 event.target.className = "checked"
             }
-            console.log(!event.target.className)
         })
     }
 
@@ -327,6 +337,8 @@ const FilterTasks = (() => {
             RenderTasks.append(task.title, task.description, task.dueDate, task.priority, task.status)        
         }
     }
+
+    return{ renderFilteredTasks}
 })()
 
 const manageTasks = (() =>{
@@ -354,6 +366,7 @@ const manageTasks = (() =>{
     }
     function editTask(event){
         InputFormDisplay.inputFormWrapper.className = "show"
+        const sideBar = document.querySelector(".side-bar")
         RenderTasks.saveBtn()
         Tasks.tasks.forEach(task => {
             if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
@@ -383,14 +396,7 @@ const manageTasks = (() =>{
                                         TaskInfoReceiver.getTaskInfo()["priority"] != undefined 
                                             ? task["priority"] = TaskInfoReceiver.getTaskInfo()["priority"] 
                                             :false
-                                        
-                                        InputFormDisplay.resetInputFields()
-                                        InputFormDisplay.inputFormWrapper.className = "hidden"
-                                        while(content.firstChild){ content.removeChild(content.firstChild)}
-                                        for(const task of Tasks.tasks){
-                                            RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
-                                        }
-                                        PriorityMark.priorityIndicators()
+                                        Tasks.handler(event)
                                     })
                                 }
                             })
@@ -418,7 +424,6 @@ const manageTasks = (() =>{
 })()
 
 
-export {Tasks}       
 
 
 

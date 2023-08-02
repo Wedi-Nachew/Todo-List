@@ -71,28 +71,35 @@ const TaskInfoReceiver = (()=>{
 })()
 
 const Tasks = (() => {
-    const add = document.querySelector(".add-btn")
+    const add = document.querySelector(".header button")
     const content = document.querySelector(".content")
     const details = TaskInfoReceiver.getTaskInfo()
     const tasks = [
-                    {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1},
-                    {title: "Today", description: "today", dueDate: "2023-08-01", priority: 2},
-                    {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3},
-                    {title: "This Week", description: "this week", dueDate: "2023-08-03", priority: 4}
+                    {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1, status :"uncompleted"},
+                    {title: "Today", description: "today", dueDate: "2023-08-01", priority: 2, status :"uncompleted"},
+                    {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3, status :"uncompleted"},
+                    {title: "This Week", description: "this week", dueDate: "2023-08-03", priority: 4, status :"uncompleted"}
                   ]
 
     const Task = (title, description, dueDate, priority) => {
-        return {title, description, dueDate, priority}
+        const status = "uncompleted"
+        return {title, description, dueDate, priority, status }
     }
 
-    add.addEventListener("click", handler)
+    const eventHandlers = () => {
+        inputForm.addEventListener("click", (event)=>{
+            if(event.target.className == "add-btn"){
+                handler(event)
+            }
+       })
+    }
 
     function addTask(){
             const newTask = Task(details.title, details.description, details.dueDate, details.priority)
             tasks.push(newTask) 
     }
     function handler(event){
-        if(details.title && details.dueDate && details.priority && manageTasks.getEditStatus() == "No"){
+        if(details.title && details.dueDate && details.priority){
             event.preventDefault()
             addTask()
             InputFormDisplay.resetInputFields()
@@ -102,12 +109,11 @@ const Tasks = (() => {
                 RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
             }
             PriorityMark.priorityIndicators()
-            RenderTasks.productivityReport()
         }
     }
 
     const getTasks = () => tasks
-
+    eventHandlers()
     return{getTasks, tasks, handler}
 })()
 
@@ -235,12 +241,14 @@ const FilterTasks = (() => {
                 }
                 header.textContent = event.target.textContent
                 PriorityMark.priorityIndicators()
-           
+                console.log( Tasks.getTasks())
             }
         })
 
         renderFilteredTasks(Tasks.getTasks())
+        // taskMenu.querySelector("button").classList.add("active")
         PriorityMark.priorityIndicators()
+        
     })()
 
     function renderFilteredTasks(events){
@@ -265,10 +273,6 @@ const manageTasks = (() =>{
                 editTask(event)
             }else if(event.target.className === "remove"){
                 removeTask(event)
-            }else if(event.target.id === "task-completion" && event.target.checked){
-                event.target.parentNode.classList.add("completed")
-            }else if(event.target.id === "task-completion" && !event.target.checked){
-                event.target.parentNode.classList.remove("completed")
             }
 
             
@@ -285,20 +289,20 @@ const manageTasks = (() =>{
     function editTask(event){
         InputFormDisplay.inputFormWrapper.className = "show"
         RenderTasks.saveBtn()
-                Tasks.tasks.forEach(task => {
-                    if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
-                        inputForm.childNodes.forEach(child => {
-                        if(child.nodeName !== "DIV" && child.nodeName == "INPUT"){
-                            child.value = task["title"]
-                        }else if(child.nodeName !== "DIV" && child.nodeName == "TEXTAREA"){
+        Tasks.tasks.forEach(task => {
+            if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
+                inputForm.childNodes.forEach(child => {
+                    if(child.nodeName !== "DIV" && child.nodeName == "INPUT"){
+                        child.value = task["title"]
+                    }else if(child.nodeName !== "DIV" && child.nodeName == "TEXTAREA"){
                             child.value = task["description"]
-                        }else if(child.nodeName === "DIV"){
-                            child.childNodes.forEach(grandChild => {
-                               if(grandChild.nodeName === "INPUT"){
-                                    grandChild.value = task["dueDate"]
-                                }else if(grandChild.nodeName === "SELECT"){
+                    }else if(child.nodeName === "DIV"){
+                        child.childNodes.forEach(grandChild => {
+                            if(grandChild.nodeName === "INPUT"){
+                                grandChild.value = task["dueDate"]
+                            }else if(grandChild.nodeName === "SELECT"){
                                     grandChild.value = task["priority"]
-                                }else if(grandChild.className == "save-btn"){
+                            }else if(grandChild.className == "save-btn"){
                                     grandChild.addEventListener("click", (event) => {
                                         event.preventDefault()
                                         TaskInfoReceiver.getTaskInfo()["title"] != undefined 
@@ -347,8 +351,17 @@ const manageTasks = (() =>{
     return{getEditStatus, removeTask}
 })()
 
+function taskCompletion(){
+    const checkBox = document.querySelector("#task-completion")
+    checkBox.addEventListener("click", () => {
+        if(checkBox.checked){
+            checkBox.parentNode.classList.add("completed")
+        }else if(!checkBox.checked){
+            checkBox.parentNode.classList.remove("completed")
+        }
+    })
 
-
+}
 export {Tasks}       
 
 

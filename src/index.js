@@ -102,14 +102,7 @@ const Tasks = (() => {
                 RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
             }
             PriorityMark.priorityIndicators()
-        }else if(details.title && details.dueDate && details.priority && manageTasks.getEditStatus() == "yes"){
-            InputFormDisplay.resetInputFields()
-            InputFormDisplay.inputFormWrapper.className = "hidden"
-            while(content.firstChild){ content.removeChild(content.firstChild)}
-            for(const task of Tasks.tasks){
-                RenderTasks.append(task.title, task.description, task.dueDate, task.priority)
-            }
-            PriorityMark.priorityIndicators()
+            RenderTasks.productivityReport()
         }
     }
 
@@ -221,14 +214,23 @@ const FilterTasks = (() => {
         taskMenu.addEventListener("click", (event)=>{
             if(event.target.nodeName == "BUTTON"){
 
+                taskMenu.childNodes.forEach(child => {
+                    child.className == "active" ? child.classList.remove("active") : false
+                })
+
                 while(content.firstChild){ content.removeChild(content.firstChild)}
+                
                 if(event.target.textContent.includes("Home")){
+                    event.target.classList.add("active")
                     renderFilteredTasks(Tasks.getTasks())
                 }else if(event.target.textContent.includes("Today")){
+                    event.target.classList.add("active")
                     renderFilteredTasks(todayTasks.determineDueDate())
                 }else if(event.target.textContent.includes("Upcoming")){
+                    event.target.classList.add("active")
                     renderFilteredTasks(UpcomingTasks.determineFutureEvent())
                 }else if(event.target.textContent.includes("This Week")){
+                    event.target.classList.add("active")
                     renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
                 }
                 header.textContent = event.target.textContent
@@ -241,7 +243,6 @@ const FilterTasks = (() => {
         PriorityMark.priorityIndicators()
     })()
 
-
     function renderFilteredTasks(events){
         for(const task of events){
             RenderTasks.append(task.title, task.description, task.dueDate, task.priority)        
@@ -249,7 +250,7 @@ const FilterTasks = (() => {
     }
 
 
-} )()
+})()
 
 const manageTasks = (() =>{
     const content = document.querySelector(".content")
@@ -259,12 +260,18 @@ const manageTasks = (() =>{
     const eventHandlers = () => {
 
         content.addEventListener("click", (event) => {
-           if(event.target.className === "edit"){
+            if(event.target.className === "edit"){
                 edit = "yes"
                 editTask(event)
             }else if(event.target.className === "remove"){
                 removeTask(event)
+            }else if(event.target.id === "task-completion" && event.target.checked){
+                event.target.parentNode.classList.add("completed")
+            }else if(event.target.id === "task-completion" && !event.target.checked){
+                event.target.parentNode.classList.remove("completed")
             }
+
+            
         })
     }
     function removeTask(event) {
@@ -322,10 +329,24 @@ const manageTasks = (() =>{
                     }
                 })
     }
+    function taskCompletion(event){
+        event.target.parentNode.childNodes.forEach(item => {
+            if(item.className == "task-text"){
+                content.removeChild(item.parentNode)
+                Tasks.tasks.forEach(task => {
+                    if(Object.values(task).includes(item.firstChild.firstChild.textContent)){
+                        Tasks.tasks.splice(Tasks.tasks.indexOf(task), 1)
+                    }
+                })
+            }
+       
+        });
+    }
 
     eventHandlers()
-    return{getEditStatus}
+    return{getEditStatus, removeTask}
 })()
+
 
 
 export {Tasks}       

@@ -96,7 +96,7 @@ export const Tasks = (() => {
     const sideBar = document.querySelector(".side-bar")
     const content = document.querySelector(".content")
     const details = TaskInfoReceiver.getTaskInfo()
-    const tasks = [
+    let tasks = [
                     {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1, status :"completed", project: "Home"},
                     {title: "Today", description: "today", dueDate: "2023-08-01", priority: 2, status :"uncompleted", project: "Fitness"},
                     {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3, status :"uncompleted", project: "Work"},
@@ -131,6 +131,7 @@ export const Tasks = (() => {
                 event.preventDefault()
                 addTask()
                 handler(event)
+                saveToLocalStorage()
             }
        })
     }
@@ -163,10 +164,17 @@ export const Tasks = (() => {
             taskStatus.statusIndicator()
             PriorityMark.priorityIndicators()
     }
+    function saveToLocalStorage() {
+          localStorage.setItem("tasks", JSON.stringify(tasks))
+    }
+    const getFromLocalStorage = (() => {
+       const saved =  JSON.parse(localStorage.getItem("tasks"))
+       saved ? tasks = saved : false
+    })()
     const getTasks = () => tasks
 
     eventHandlers()
-    return{getTasks, tasks, handler}
+    return{getTasks, tasks, handler, saveToLocalStorage, getFromLocalStorage}
 })()
 
 const RenderTasks= (()=>{
@@ -329,6 +337,7 @@ const taskStatus = (() => {
                 event.target.parentNode.lastChild.textContent = "completed"
                 event.target.className = "checked"
             }
+            Tasks.saveToLocalStorage()
         })
     }
 
@@ -358,7 +367,6 @@ const FilterTasks = (() => {
                 filtering(event)  
             }
         })
-
         renderFilteredTasks(Tasks.getTasks())
         taskMenu.querySelector("button").classList.add("active")
         taskStatus.statusIndicator()
@@ -418,6 +426,7 @@ const manageTasks = (() =>{
         Tasks.tasks.forEach(task => {
             if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
                 Tasks.tasks.splice(Tasks.tasks.indexOf(task), 1)
+                Tasks.saveToLocalStorage()
             }
         })
     }
@@ -454,13 +463,14 @@ const manageTasks = (() =>{
                                             ? task["priority"] = TaskInfoReceiver.getTaskInfo()["priority"] 
                                             :false
                                         Tasks.handler(event)
+                                        Tasks.saveToLocalStorage()
                                     })
                                 }
                             })
                         }
                         })
-                    }
-                })
+                }
+            })
     }
 
     eventHandlers()
@@ -494,6 +504,7 @@ const Projects = (() => {
     eventHandlers()
     return {projectTask}
 })()
+
 
 
 

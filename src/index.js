@@ -3,19 +3,23 @@ import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
 import removeIcon from "./icons/delete.svg"
 import { Today as todayTasks } from "./today.js"
 import { UpcomingTasks } from "./upcoming.js"
+import flagIcon from "./icons/flag.svg"
 import { ThisWeekTasks } from "./this-week.js"
 import editIcon from "./icons/pencil.svg"
 
 
-
-
 const inputForm = document.querySelector("form")
+
 
 
 const InputFormDisplay = (()=>{
     const addTask = document.querySelector(".header > button")
     const inputFormWrapper = document.querySelector("#form-wrapper")
     const formInputBtn = document.querySelector("form div button")
+    const addProject = document.querySelector(".side-bar .add-project")
+    const projectInputWrapper = document.querySelector("#project-wrapper")
+    const projectInput = projectInputWrapper.querySelector("form")
+    const projectSubmitBtn = projectInputWrapper.querySelector(".add-project")
   
     const eventHandlers = ()=>{
         addTask.addEventListener("click", ()=>{
@@ -23,10 +27,19 @@ const InputFormDisplay = (()=>{
             resetInputFields()
             inputFormWrapper.className = "show"
         })
+        addProject.addEventListener("click", () => {
+            resetInputFields()
+            projectInputWrapper.className = "show"
+        })
 
         inputFormWrapper.addEventListener("click", (event)=>{
             if(!inputForm.contains(event.target)){
                 inputFormWrapper.className = "hidden"
+            }
+        })
+        projectInputWrapper.addEventListener("click", (event)=>{
+            if(!projectInput.contains(event.target)){
+                projectInputWrapper.className = "hidden"
             }
         })
    }
@@ -38,17 +51,20 @@ const InputFormDisplay = (()=>{
                child.childNodes.forEach(grandChild => grandChild.value = "")
             }
         })
+       projectInput.childNodes.forEach(child => child.value = "")
     }
 
     eventHandlers()
     resetInputFields()
-    return {inputFormWrapper, resetInputFields}
+    return {inputFormWrapper, resetInputFields, projectInputWrapper, projectInput}
     
 })()
 
 const TaskInfoReceiver = (()=>{
     const taskInfo = {}
-    const getTaskInfo= () => taskInfo
+    let projectName = ""
+    const getTaskInfo = () => taskInfo
+    const getProjectName = () => projectName
 
     inputForm.addEventListener("input", (event)=>{
         switch(event.target.name){
@@ -66,9 +82,12 @@ const TaskInfoReceiver = (()=>{
                 break
         }
     })
+    InputFormDisplay.projectInput.addEventListener("input", (event)=> {
+        event.target.name == "name" ? projectName = event.target.value : false
+    })
     
     
-    return {getTaskInfo}
+    return {getTaskInfo, getProjectName}
 })()
 
 export const Tasks = (() => {
@@ -77,15 +96,32 @@ export const Tasks = (() => {
     const content = document.querySelector(".content")
     const details = TaskInfoReceiver.getTaskInfo()
     const tasks = [
-                    {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1, status :"completed"},
-                    {title: "Today", description: "today", dueDate: "2023-08-01", priority: 2, status :"uncompleted"},
-                    {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3, status :"uncompleted"},
-                    {title: "This Week", description: "this week", dueDate: "2023-08-03", priority: 4, status :"uncompleted"}
+                    {title: "Past", description: "past", dueDate: "2023-07-19", priority: 1, status :"completed", project: "Home"},
+                    {title: "Today", description: "today", dueDate: "2023-08-01", priority: 2, status :"uncompleted", project: "Fitness"},
+                    {title: "Upcoming", description: "upcoming", dueDate: "2023-08-20", priority: 3, status :"uncompleted", project: "Work"},
+                    {title: "This Week", description: "this week", dueDate: "2023-08-03", priority: 4, status :"uncompleted", project: "School"}
                   ]
 
     const Task = (title, description, dueDate, priority) => {
         const status = "uncompleted"
-        return {title, description, dueDate, priority, status }
+        let projectName = "Home"
+        const setProject = (() =>{
+            sideBar.childNodes.forEach(child => {
+                child.childNodes.forEach(grandChild => {
+                    if(grandChild.classList == "active" && grandChild.textContent.includes("Today")){
+                        projectName = "Home"
+                    }else if(grandChild.classList == "active" && grandChild.textContent.includes("Upcoming")){
+                        projectName = "Home"
+                    }else if(grandChild.classList == "active" && grandChild.textContent.includes("This Week")){
+                        projectName = "Home"
+                    }else if(grandChild.classList == "active"){
+                        projectName = grandChild.textContent.replace(/[\n]/, "").trim()
+                    }
+                
+                })
+            })
+        })()
+        return {title, description, dueDate, priority, status, project : projectName}
     }
 
     const eventHandlers = () => {
@@ -116,9 +152,12 @@ export const Tasks = (() => {
                         FilterTasks.renderFilteredTasks(UpcomingTasks.determineFutureEvent())
                     }else if(grandChild.classList == "active" && grandChild.textContent.includes("This Week")){
                         FilterTasks.renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
+                    }else if(grandChild.classList == "active"){
+                        FilterTasks.renderFilteredTasks(Projects.projectTask(grandChild.textContent.replace(/[\n]/, "").trim()))
                     }
-                
+                   
                 })
+                
             })
             taskStatus.statusIndicator()
             PriorityMark.priorityIndicators()
@@ -194,17 +233,26 @@ const RenderTasks= (()=>{
         saveChanges.className = "save-btn"
         inputDiv.appendChild(saveChanges)
     }
-    const taskStatus = (status) => {
-        for(const task in Tasks.tasks){
-            console.log(task)
-        }
+    const renderProject = () => {
+        const projects = document.querySelector(".projects")
+        const project = document.createElement("button")
+        const flag = document.createElement("img")
+        const text = document.createElement("div")
+
+        flag.src = flagIcon
+        text.textContent = TaskInfoReceiver.getProjectName()
+        project.appendChild(flag)
+        project.appendChild(text)
+        
+
+        projects.appendChild(project)
     }
 
     function removeAnyButton(){
         inputDiv.childNodes.forEach(child => (child.nodeName == "BUTTON") ? inputDiv.removeChild(child) : false)
     }
 
-   return{append, addBtn, saveBtn, taskStatus}
+   return{append, addBtn, saveBtn, renderProject}
 })()
 
 const PriorityMark = (() => {
@@ -292,35 +340,21 @@ const FilterTasks = (() => {
     const header = document.querySelector(".main h1")
     const content = document.querySelector(".content")
     const taskMenu = document.querySelector(".task-menu")
+    const sideBar = document.querySelector(".side-bar")
    
+
     const eventHandlers = (() => {
 
-        taskMenu.addEventListener("click", (event)=>{
-            if(event.target.nodeName == "BUTTON"){
-
-                taskMenu.childNodes.forEach(child => {
-                    child.className == "active" ? child.classList.remove("active") : false
-                })
-
-                while(content.firstChild){ content.removeChild(content.firstChild)}
-                
-                if(event.target.textContent.includes("Home")){
-                    event.target.classList.add("active")
-                    renderFilteredTasks(Tasks.getTasks())
-                }else if(event.target.textContent.includes("Today")){
-                    event.target.classList.add("active")
-                    renderFilteredTasks(todayTasks.determineDueDate())
-                }else if(event.target.textContent.includes("Upcoming")){
-                    event.target.classList.add("active")
-                    renderFilteredTasks(UpcomingTasks.determineFutureEvent())
-                }else if(event.target.textContent.includes("This Week")){
-                    event.target.classList.add("active")
-                    renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
-                }
-                header.textContent = event.target.textContent
-                taskStatus.statusIndicator()
-                PriorityMark.priorityIndicators()
-                
+        sideBar.addEventListener("click", (event)=>{
+            if(event.target.nodeName == "BUTTON" && event.target.className !== "add-project"){
+                sideBar.childNodes.forEach(child => {
+                    if(child.nodeName == "DIV"){
+                       child.childNodes.forEach(grandChild => {
+                            grandChild.className == "active" ? grandChild.classList.remove("active") : false
+                        })
+                    }
+                }) 
+                filtering(event)  
             }
         })
 
@@ -336,6 +370,28 @@ const FilterTasks = (() => {
         for(const task of events){
             RenderTasks.append(task.title, task.description, task.dueDate, task.priority, task.status)        
         }
+    }
+    function filtering(event){
+        while(content.firstChild){ content.removeChild(content.firstChild)}
+        if(event.target.textContent.includes("Home")){
+            event.target.classList.add("active")
+            renderFilteredTasks(Tasks.getTasks())
+        }else if(event.target.textContent.includes("Today")){
+            event.target.classList.add("active")
+            renderFilteredTasks(todayTasks.determineDueDate())
+        }else if(event.target.textContent.includes("Upcoming")){
+            event.target.classList.add("active")
+            renderFilteredTasks(UpcomingTasks.determineFutureEvent())
+        }else if(event.target.textContent.includes("This Week")){
+            event.target.classList.add("active")
+            renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
+        }else{
+            event.target.classList.add("active")
+            renderFilteredTasks(Projects.projectTask(event.target.textContent.replace(/[\n]/, "").trim()))
+        }
+        header.textContent = event.target.textContent
+        taskStatus.statusIndicator()
+        PriorityMark.priorityIndicators()
     }
 
     return{ renderFilteredTasks}
@@ -405,23 +461,35 @@ const manageTasks = (() =>{
                     }
                 })
     }
-    function taskCompletion(event){
-        event.target.parentNode.childNodes.forEach(item => {
-            if(item.className == "task-text"){
-                content.removeChild(item.parentNode)
-                Tasks.tasks.forEach(task => {
-                    if(Object.values(task).includes(item.firstChild.firstChild.textContent)){
-                        Tasks.tasks.splice(Tasks.tasks.indexOf(task), 1)
-                    }
-                })
-            }
-       
-        });
-    }
 
     eventHandlers()
     return{getEditStatus, removeTask}
 })()
+
+const Projects = (() => {
+    const projects = document.querySelector(".projects")
+    const addProject = document.querySelector("#project-wrapper .add-project")
+
+    const eventHandlers = () => {
+        addProject.addEventListener("click", (event) => {
+                event.preventDefault()
+                RenderTasks.renderProject()
+                InputFormDisplay.projectInputWrapper.className = "hidden"
+        })
+    }
+
+    function projectTask(project){
+        const projectTasks = []
+        for(const task of Tasks.getTasks()){
+            task.project == project ? projectTasks.push(task) : false
+        }
+
+        return projectTasks
+    }
+    eventHandlers()
+    return {projectTask}
+})()
+
 
 
 

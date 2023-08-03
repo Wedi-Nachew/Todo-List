@@ -75,6 +75,7 @@ body{
     padding: 40px 20px 75px 20px;
     width: 22vw;
     position: fixed;
+    
 }
 .task-menu,
 .projects{
@@ -119,7 +120,8 @@ img[src$="svg"]{
     margin-bottom: 0;
     width: auto;
 }
-#form-wrapper{
+#form-wrapper,
+#project-wrapper{
     position: fixed;
     width: 100%;
     top: 0;
@@ -143,7 +145,8 @@ textarea{
     font-family: inherit;
     outline: none;
 }
-form{
+#form-wrapper form,
+#project-wrapper form{
     display: flex;
     flex-direction: column;
     width: 550px;
@@ -154,13 +157,15 @@ form{
 input, textarea{
     padding: 5px 10px;
 }
-form input[name="title"]{
+form input[name="title"],
+form input[name="name"]{
     font-size: 1.35rem;
     font-weight: 600;
     margin-top: 5px;
     padding-left: 0;
 }
-form input[name="title"]::placeholder{
+form input[name="title"]::placeholder,
+form input[name="name"]::placeholder{
     font-size: 1.2rem;
     font-weight: 600;
     color: #141414;
@@ -206,6 +211,22 @@ form select{
     background-repeat: no-repeat;
     background-position: right center;
     background-size: auto 38px;
+}
+#project-wrapper form{
+    width: 350px;
+    height: 150px;
+    justify-content: space-around;
+}
+#project-wrapper .add-project{
+    background-color: #1982c4;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 7px 60px;
+    align-self: center;
+    cursor: pointer;
+    border-radius: 5px;
 }
 .show{
     visibility: visible;

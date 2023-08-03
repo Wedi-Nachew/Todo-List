@@ -65,6 +65,7 @@ const TaskInfoReceiver = (()=>{
     let projectName = ""
     const getTaskInfo = () => taskInfo
     const getProjectName = () => projectName
+    const setProjectName = (value) => projectName = value
 
     inputForm.addEventListener("input", (event)=>{
         switch(event.target.name){
@@ -87,7 +88,7 @@ const TaskInfoReceiver = (()=>{
     })
     
     
-    return {getTaskInfo, getProjectName}
+    return {getTaskInfo, getProjectName, setProjectName}
 })()
 
 export const Tasks = (() => {
@@ -469,12 +470,16 @@ const manageTasks = (() =>{
 const Projects = (() => {
     const projects = document.querySelector(".projects")
     const addProject = document.querySelector("#project-wrapper .add-project")
+    const projectInput = document.querySelector("#project-wrapper form")
 
     const eventHandlers = () => {
         addProject.addEventListener("click", (event) => {
+            if(TaskInfoReceiver.getProjectName()){
                 event.preventDefault()
                 RenderTasks.renderProject()
                 InputFormDisplay.projectInputWrapper.className = "hidden"
+                TaskInfoReceiver.setProjectName("")
+            }
         })
     }
 

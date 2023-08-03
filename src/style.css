@@ -82,9 +82,12 @@ body{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding-bottom: 0;
+    background-color: hsl(0, 0%, 97%);
 }
 .projects{
     flex-grow: 1;
+    overflow-y: auto;
 }
 .side-bar button{
     padding: 5px 125px 5px 15px;
@@ -117,8 +120,12 @@ img[src$="svg"]{
     width: auto;
 }
 .projects h2{
-    margin-bottom: 0;
+    margin: 5px  0 0 0;
     width: auto;
+    position: sticky;
+    top: 0%;
+    padding: 10px 0;
+    background-color: hsl(0, 0%, 97%);
 }
 #form-wrapper,
 #project-wrapper{
@@ -223,10 +230,15 @@ form select{
     color: #fff;
     font-weight: 600;
     font-size: 1.1rem;
-    padding: 7px 60px;
+    padding: 7px 70px;
     align-self: center;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
+}
+#project-wrapper .add-project:hover,
+form div button:hover{
+    background-color: #3a86ff;
+    color: #000
 }
 .show{
     visibility: visible;

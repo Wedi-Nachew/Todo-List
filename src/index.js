@@ -255,21 +255,20 @@ const RenderTasks= (()=>{
         saveChanges.className = "save-btn"
         inputDiv.appendChild(saveChanges)
     }
-    const renderProject = () => {
+    const renderProject = (value) => {
         const projects = document.querySelector(".projects")
         const project = document.createElement("button")
         const flag = document.createElement("img")
         const text = document.createElement("div")
 
         flag.src = flagIcon
-        text.textContent = TaskInfoReceiver.getProjectName()
+        text.textContent = value //TaskInfoReceiver.getProjectName()
         project.appendChild(flag)
         project.appendChild(text)
         
 
         projects.appendChild(project)
     }
-
     function removeAnyButton(){
         inputDiv.childNodes.forEach(child => (child.nodeName == "BUTTON") ? inputDiv.removeChild(child) : false)
     }
@@ -369,7 +368,8 @@ const FilterTasks = (() => {
     const eventHandlers = (() => {
 
         sideBar.addEventListener("click", (event)=>{
-            if(event.target.nodeName == "BUTTON" && event.target.className !== "add-project"){
+            if((event.target.nodeName == "BUTTON" || event.target.parentNode.nodeName == "BUTTON" ||
+                event.target.parentNode.parentNode.nodeName == "BUTTON")  && event.target.className !== "add-project"){
                 sideBar.childNodes.forEach(child => {
                     if(child.nodeName == "DIV"){
                        child.childNodes.forEach(grandChild => {
@@ -380,6 +380,7 @@ const FilterTasks = (() => {
                 filtering(event)  
             }
         })
+        renderSavedProjects()
         renderFilteredTasks(Tasks.getTasks())
         taskMenu.querySelector("button").classList.add("active")
         taskStatus.statusIndicator()
@@ -407,6 +408,12 @@ const FilterTasks = (() => {
         }else if(event.target.textContent.includes("This Week")){
             event.target.classList.add("active")
             renderFilteredTasks(ThisWeekTasks.determineThisWeekTasks())
+        }else if(event.target.parentNode.nodeName == "BUTTON"){
+            event.target.parentNode.classList.add("active")
+            renderFilteredTasks(Projects.projectTask(event.target.parentNode.textContent.replace(/[\n]/, "").trim()))
+        }else if(event.target.parentNode.parentNode.nodeName == "BUTTON"){
+            event.target.parentNode.parentNode.classList.add("active")
+            renderFilteredTasks(Projects.projectTask(event.target.textContent.replace(/[\n]/, "").trim()))
         }else{
             event.target.classList.add("active")
             renderFilteredTasks(Projects.projectTask(event.target.textContent.replace(/[\n]/, "").trim()))
@@ -414,6 +421,15 @@ const FilterTasks = (() => {
         header.textContent = event.target.textContent
         taskStatus.statusIndicator()
         PriorityMark.priorityIndicators()
+    }
+   function renderSavedProjects(){
+        for (const pro of Tasks.getTasks()){
+            if(pro.project !== "School" && pro.project !== "Work" && 
+                pro.project !== "Fitness" && pro.project !== "Home"){
+                    RenderTasks.renderProject(pro.project)
+            }
+        }
+
     }
 
     return{ renderFilteredTasks}
@@ -523,12 +539,13 @@ const Projects = (() => {
         addProject.addEventListener("click", (event) => {
             if(TaskInfoReceiver.getProjectName()){
                 event.preventDefault()
-                RenderTasks.renderProject()
+                RenderTasks.renderProject(TaskInfoReceiver.getProjectName())
                 InputFormDisplay.projectInputWrapper.className = "hidden"
                 TaskInfoReceiver.setProjectName("")
             }
         })
     }
+    
 
     function projectTask(project){
         const projectTasks = []

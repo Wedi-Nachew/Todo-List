@@ -4,12 +4,14 @@ import removeIcon from "./icons/delete.svg"
 import { Today as todayTasks } from "./today.js"
 import { UpcomingTasks } from "./upcoming.js"
 import flagIcon from "./icons/flag.svg"
-import { ThisWeekTasks } from "./this-week.js"
+import detailsIcon from "./icons/details.svg"
 import editIcon from "./icons/pencil.svg"
+import { ThisWeekTasks } from "./this-week.js"
+
+
 
 
 const inputForm = document.querySelector("form")
-
 
 
 const InputFormDisplay = (()=>{
@@ -20,6 +22,8 @@ const InputFormDisplay = (()=>{
     const projectInputWrapper = document.querySelector("#project-wrapper")
     const projectInput = projectInputWrapper.querySelector("form")
     const projectSubmitBtn = projectInputWrapper.querySelector(".add-project")
+    const detailsWrapper = document.querySelector("#details-wrapper")
+    const details = detailsWrapper.querySelector(".details")
   
     const eventHandlers = ()=>{
         addTask.addEventListener("click", ()=>{
@@ -33,13 +37,18 @@ const InputFormDisplay = (()=>{
         })
 
         inputFormWrapper.addEventListener("click", (event)=>{
-            if(!inputForm.contains(event.target)){
+            if(!inputForm.contains(event.target) || event.target.nodeName == "IMG"){
                 inputFormWrapper.className = "hidden"
             }
         })
         projectInputWrapper.addEventListener("click", (event)=>{
-            if(!projectInput.contains(event.target)){
+            if(!projectInput.contains(event.target) || event.target.nodeName == "IMG"){
                 projectInputWrapper.className = "hidden"
+            }
+        })
+        detailsWrapper.addEventListener("click", (event) => {
+            if(!details.contains(event.target) || event.target.nodeName == "IMG"){
+                detailsWrapper.className = "hidden"
             }
         })
    }
@@ -56,7 +65,7 @@ const InputFormDisplay = (()=>{
 
     eventHandlers()
     resetInputFields()
-    return {inputFormWrapper, resetInputFields, projectInputWrapper, projectInput}
+    return {inputFormWrapper, resetInputFields, projectInputWrapper, projectInput, detailsWrapper, details}
     
 })()
 
@@ -194,6 +203,7 @@ const RenderTasks= (()=>{
         const status = document.createElement("p")
         const edit = document.createElement("img")
         const remove = document.createElement("img")
+        const details = document.createElement("img")
 
         task.className = "task"
         taskText.className = "task-text"
@@ -204,6 +214,8 @@ const RenderTasks= (()=>{
         edit.className = "edit"
         remove.src = removeIcon
         remove.className = "remove"
+        details.src = detailsIcon
+        details.className = "details"
 
         title.textContent = info1
         description.textContent = info2
@@ -220,6 +232,7 @@ const RenderTasks= (()=>{
         taskText.appendChild(dueDate)
         taskText.appendChild(edit)
         taskText.appendChild(remove)
+        taskText.appendChild(details)
         task.appendChild(checkBox)
         task.appendChild(taskText)
         task.appendChild(priority)
@@ -418,6 +431,9 @@ const manageTasks = (() =>{
                 editTask(event)
             }else if(event.target.className === "remove"){
                 removeTask(event)
+            }else if(event.target.className === "details"){
+                getDetails(event)
+                
             }
         })
     }
@@ -471,6 +487,27 @@ const manageTasks = (() =>{
                         })
                 }
             })
+    }
+    function getDetails(event){
+        const details = document.querySelector("#details-wrapper .details")
+        const taskTitle = details.querySelector(".task-title")
+        const taskDescription = details.querySelector(".task-description")
+        const taskDueDate = details.querySelector(".task-due-date")
+        const taskPriority = details.querySelector(".task-priority")
+        const taskStatus = details.querySelector(".task-status")
+        const taskProject = details.querySelector(".task-project")
+        
+        Tasks.tasks.forEach(task => {
+            if(Object.values(task).includes(event.target.parentNode.firstChild.firstChild.textContent)){
+                taskTitle.textContent = task.title;
+                taskDescription.textContent = task.description
+                taskDueDate.textContent = task.dueDate
+                taskPriority.textContent = task.priority
+                taskStatus.textContent = task.status
+                taskProject.textContent = task.project
+            }
+        })
+        InputFormDisplay.detailsWrapper.className = "show"
     }
 
     eventHandlers()

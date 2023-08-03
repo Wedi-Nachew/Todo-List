@@ -114,6 +114,7 @@ button span{
 .projects + button{
    height: 40px;
    font-weight: 700;
+   margin-top: 10px;
 }
 img[src$="svg"]{
     height: 25px;
@@ -128,7 +129,8 @@ img[src$="svg"]{
     background-color: hsl(0, 0%, 97%);
 }
 #form-wrapper,
-#project-wrapper{
+#project-wrapper,
+#details-wrapper{
     position: fixed;
     width: 100%;
     top: 0;
@@ -160,6 +162,7 @@ textarea{
     border-radius: 10px;
     padding: 15px;
     background-color: #fff;
+    position: relative;
 }
 input, textarea{
     padding: 5px 10px;
@@ -240,6 +243,37 @@ form div button:hover{
     background-color: #3a86ff;
     color: #000
 }
+#details-wrapper .details{
+    height: 250px;
+    display: grid;
+    grid-template-columns: 90px auto;
+    grid-auto-rows: 35px;
+    width: 550px;
+    border-radius: 10px;
+    padding: 0 20px;
+    background-color: #fff;
+    align-items: center;
+    align-content: center;
+    column-gap: 50px;
+    position: relative;
+}
+#details-wrapper .details p{
+    margin: 5px 0;
+    font-size: 1.15rem;
+}
+#details-wrapper .details p:nth-child(2n+1){
+    font-weight: 600;
+}
+#details-wrapper img,
+#form-wrapper  img,
+#project-wrapper img{
+    width: 30px;
+    height: auto;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
 .show{
     visibility: visible;
 }
@@ -297,19 +331,19 @@ form div button:hover{
     margin-bottom: 0;
     font-size: 1.1rem;
 }
-.task-text > img:first-of-type{
-    margin-bottom: 20px;
-    cursor: pointer;
-}
+
 .task-text > img:last-of-type{
-    margin-bottom: 20px;
     margin-right: 40px;
     cursor: pointer;
 }
+.task-text > img{
+    cursor: pointer;
+    margin-bottom: 15px;
+    height: 22px;
+}
 .task-text img:hover{
-    height: 25.5px;
-    width: 25.5px;
-    box-shadow: 0 0 5px hsl(0, 0%, 60%);
+    height: 23px;
+    box-shadow: 0 0 5px hsl(0, 0%, 75%);
     border-radius: 50%;
 }
 .task-text > p{

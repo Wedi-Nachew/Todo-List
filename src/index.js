@@ -1,14 +1,13 @@
 import "./style.css"
 import { format, isEqual, isFuture, lightFormat, parseISO } from 'date-fns'
-import removeIcon from "./icons/delete.svg"
 import { Today as todayTasks } from "./today.js"
 import { UpcomingTasks } from "./upcoming.js"
-import flagIcon from "./icons/flag.svg"
+import removeIcon from "./icons/delete.svg"
+import { ThisWeekTasks } from "./this-week.js"
+import removeProject from "./icons/remove-project.svg"
+import briefCase from "./icons/work.svg"
 import detailsIcon from "./icons/details.svg"
 import editIcon from "./icons/pencil.svg"
-import { ThisWeekTasks } from "./this-week.js"
-
-
 
 
 const inputForm = document.querySelector("form")
@@ -118,11 +117,10 @@ export const Tasks = (() => {
         const setProject = (() =>{
             sideBar.childNodes.forEach(child => {
                 child.childNodes.forEach(grandChild => {
-                    if(grandChild.classList == "active" && grandChild.textContent.includes("Today")){
-                        projectName = "Home"
-                    }else if(grandChild.classList == "active" && grandChild.textContent.includes("Upcoming")){
-                        projectName = "Home"
-                    }else if(grandChild.classList == "active" && grandChild.textContent.includes("This Week")){
+                    if((grandChild.classList == "active" && grandChild.textContent.includes("Today")) ||
+                        (grandChild.classList == "active" && grandChild.textContent.includes("Upcoming")) ||
+                        (grandChild.classList == "active" && grandChild.textContent.includes("This Week")) ||
+                        (grandChild.classList == "active" && grandChild.textContent.includes("Inbox"))){
                         projectName = "Home"
                     }else if(grandChild.classList == "active"){
                         projectName = grandChild.textContent.replace(/[\n]/, "").trim()
@@ -155,7 +153,7 @@ export const Tasks = (() => {
             while(content.firstChild){ content.removeChild(content.firstChild)}
             sideBar.childNodes.forEach(child => {
                 child.childNodes.forEach(grandChild => {
-                    if(grandChild.classList == "active" && grandChild.textContent.includes("Home")){
+                    if(grandChild.classList == "active" && grandChild.textContent.includes("Inbox")){
                         FilterTasks.renderFilteredTasks(Tasks.getTasks())
                     }else if(grandChild.classList == "active" && grandChild.textContent.includes("Today")){
                         FilterTasks.renderFilteredTasks(todayTasks.determineDueDate())
@@ -258,14 +256,17 @@ const RenderTasks= (()=>{
     const renderProject = (value) => {
         const projects = document.querySelector(".projects")
         const project = document.createElement("button")
-        const flag = document.createElement("img")
+        const projectIcon = document.createElement("img")
         const text = document.createElement("div")
+        const remove = document.createElement("img")
 
-        flag.src = flagIcon
-        text.textContent = value //TaskInfoReceiver.getProjectName()
-        project.appendChild(flag)
+        projectIcon.src = briefCase
+        text.textContent = value
+        remove.src = removeProject
+        remove.className = "remove-projects"
+        project.appendChild(projectIcon)
         project.appendChild(text)
-        
+        project.appendChild(remove)
 
         projects.appendChild(project)
     }
@@ -369,7 +370,8 @@ const FilterTasks = (() => {
 
         sideBar.addEventListener("click", (event)=>{
             if((event.target.nodeName == "BUTTON" || event.target.parentNode.nodeName == "BUTTON" ||
-                event.target.parentNode.parentNode.nodeName == "BUTTON")  && event.target.className !== "add-project"){
+                event.target.parentNode.parentNode.nodeName == "BUTTON")  && event.target.className !== "add-project" &&
+                event.target.className !== "remove-projects"){
                 sideBar.childNodes.forEach(child => {
                     if(child.nodeName == "DIV"){
                        child.childNodes.forEach(grandChild => {
@@ -377,7 +379,7 @@ const FilterTasks = (() => {
                         })
                     }
                 }) 
-                filtering(event)  
+                filter(event)  
             }
         })
         renderSavedProjects()
@@ -394,9 +396,9 @@ const FilterTasks = (() => {
             RenderTasks.append(task.title, task.description, task.dueDate, task.priority, task.status)        
         }
     }
-    function filtering(event){
+    function filter(event){
         while(content.firstChild){ content.removeChild(content.firstChild)}
-        if(event.target.textContent.includes("Home")){
+        if(event.target.textContent.includes("Inbox")){
             event.target.classList.add("active")
             renderFilteredTasks(Tasks.getTasks())
         }else if(event.target.textContent.includes("Today")){
@@ -418,17 +420,29 @@ const FilterTasks = (() => {
             event.target.classList.add("active")
             renderFilteredTasks(Projects.projectTask(event.target.textContent.replace(/[\n]/, "").trim()))
         }
-        header.textContent = event.target.textContent
+
+        event.target.textContent 
+            ? header.textContent = event.target.textContent 
+            : header.textContent = event.target.parentNode.textContent
         taskStatus.statusIndicator()
         PriorityMark.priorityIndicators()
     }
    function renderSavedProjects(){
-        for (const pro of Tasks.getTasks()){
-            if(pro.project !== "School" && pro.project !== "Work" && 
-                pro.project !== "Fitness" && pro.project !== "Home"){
-                    RenderTasks.renderProject(pro.project)
-            }
+    const projectsMenu = sideBar.querySelector(".projects")
+    const arr = []
+
+    for(const pro of Tasks.getTasks()){
+        arr.push(pro.project)
+    }
+
+    const sortedArr = arr.sort()
+    
+    for(let i =0; i < sortedArr.length; i++){
+        if(sortedArr[i] == sortedArr[i+1]){
+            sortedArr.splice(i,1)
         }
+        RenderTasks.renderProject(sortedArr[i])
+    }
 
     }
 
@@ -532,6 +546,7 @@ const manageTasks = (() =>{
 
 const Projects = (() => {
     const projects = document.querySelector(".projects")
+    const taskMenu  = document.querySelector(".task-menu")
     const addProject = document.querySelector("#project-wrapper .add-project")
     const projectInput = document.querySelector("#project-wrapper form")
 
@@ -544,6 +559,12 @@ const Projects = (() => {
                 TaskInfoReceiver.setProjectName("")
             }
         })
+
+        projects.addEventListener("click", (event) => {
+            if(event.target.className === "remove-projects"){
+                removeProjects(event)
+            }
+        })
     }
     
 
@@ -554,6 +575,19 @@ const Projects = (() => {
         }
 
         return projectTasks
+    }
+    function removeProjects(event){
+        projects.removeChild(event.target.parentNode)
+        Tasks.tasks.forEach(task => {
+            if(Object.values(task)[Object.values(task).length-1] == event.target.parentNode.textContent){
+                Tasks.tasks.splice(Tasks.tasks.indexOf(task), 1)
+                taskMenu.childNodes.forEach(child => {
+                    child.className == "active" ? child.click() : false
+                })
+                Tasks.saveToLocalStorage()
+            }
+        })
+
     }
     eventHandlers()
     return {projectTask}

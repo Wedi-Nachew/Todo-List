@@ -21,12 +21,11 @@ export const UpcomingTasks = (() => {
         today.push(new Date().getDate().toString())
 
         for(const task of tasks){
-            const dueDate = Object.values(task)[2].split("-")
+            const dueDate = Object.values(task)[2].toString().split("-")
             if( isAfter((new Date(dueDate[0], dueDate[1] - 1, dueDate[2])),
                 (new Date(today[0], today[1] - 1, today[2])))){
                 futureTasks.push(task)
-            }
-           
+            }     
         }
         
 

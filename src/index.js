@@ -8,9 +8,13 @@ import removeProject from "./icons/remove-project.svg"
 import briefCase from "./icons/work.svg"
 import detailsIcon from "./icons/details.svg"
 import editIcon from "./icons/pencil.svg"
-
-
+import "./icons/today.svg"
+import "./icons/week.svg"
+import "./icons/upcoming.svg"
+import "./icons/add.svg"
+import "./icons/todo-list.svg"
 const inputForm = document.querySelector("form")
+
 
 
 const InputFormDisplay = (()=>{

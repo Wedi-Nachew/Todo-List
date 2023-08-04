@@ -8,15 +8,47 @@ import removeProject from "./icons/remove-project.svg"
 import briefCase from "./icons/work.svg"
 import detailsIcon from "./icons/details.svg"
 import editIcon from "./icons/pencil.svg"
-import "./icons/today.svg"
-import "./icons/week.svg"
-import "./icons/upcoming.svg"
-import "./icons/add.svg"
-import "./icons/todo-list.svg"
+import inboxIcon from "./icons/inbox.svg"
+import todayIcon from "./icons/today.svg"
+import weekIcon from"./icons/week.svg"
+import upcomingIcon from"./icons/upcoming.svg"
+import addIcon from "./icons/add.svg"
+import todoListIcon from "./icons/todo-list.svg"
 const inputForm = document.querySelector("form")
 
 
+const renederIcons = (() => {
+    const header = document.querySelector(".header")
+    const addBtn = header.querySelector("button")
+    const taskMenu =  document.querySelector(".task-menu")
+    const inboxBtn = taskMenu.querySelector("button:nth-child(1)")
+    const todayBtn = taskMenu.querySelector("button:nth-child(2)")
+    const upcomingBtn = taskMenu.querySelector("button:nth-child(3)")
+    const thisWeekBtn = taskMenu.querySelector("button:nth-child(4)")
+    const headerImg = document.createElement("img")
+    const addImg = document.createElement("img")
+    const inboxImg = document.createElement("img")
+    const todayImg = document.createElement("img")
+    const upcomingImg = document.createElement("img")
+    const thisWeekImg = document.createElement("img")
+   
 
+    headerImg.src = todoListIcon
+    addImg.src = addIcon
+    addImg.class ="add"
+    inboxImg.src = inboxIcon
+    todayImg.src = todayIcon
+    upcomingImg.src = upcomingIcon
+    thisWeekImg.src = weekIcon
+
+    header.insertBefore(headerImg, header.firstChild)
+    addBtn.insertBefore(addImg, addBtn.firstChild)
+    inboxBtn.insertBefore(inboxImg, inboxBtn.firstChild)
+    todayBtn.insertBefore(todayImg, todayBtn.firstChild)
+    upcomingBtn.insertBefore(upcomingImg, upcomingBtn.firstChild)
+    thisWeekBtn.insertBefore(thisWeekImg, thisWeekBtn.firstChild)
+
+})()
 const InputFormDisplay = (()=>{
     const addTask = document.querySelector(".header > button")
     const inputFormWrapper = document.querySelector("#form-wrapper")

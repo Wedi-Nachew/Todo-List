@@ -14,6 +14,7 @@ import weekIcon from"./icons/week.svg"
 import upcomingIcon from"./icons/upcoming.svg"
 import addIcon from "./icons/add.svg"
 import todoListIcon from "./icons/todo-list.svg"
+import cancelIcon from "./icons/cancel.svg"
 const inputForm = document.querySelector("form")
 
 
@@ -25,12 +26,14 @@ const renederIcons = (() => {
     const todayBtn = taskMenu.querySelector("button:nth-child(2)")
     const upcomingBtn = taskMenu.querySelector("button:nth-child(3)")
     const thisWeekBtn = taskMenu.querySelector("button:nth-child(4)")
+    const details = document.querySelector(".details")
     const headerImg = document.createElement("img")
     const addImg = document.createElement("img")
     const inboxImg = document.createElement("img")
     const todayImg = document.createElement("img")
     const upcomingImg = document.createElement("img")
     const thisWeekImg = document.createElement("img")
+    const cancelImg = document.createElement("img")
    
 
     headerImg.src = todoListIcon
@@ -40,13 +43,15 @@ const renederIcons = (() => {
     todayImg.src = todayIcon
     upcomingImg.src = upcomingIcon
     thisWeekImg.src = weekIcon
-
+    cancelImg.src = cancelIcon
     header.insertBefore(headerImg, header.firstChild)
     addBtn.insertBefore(addImg, addBtn.firstChild)
     inboxBtn.insertBefore(inboxImg, inboxBtn.firstChild)
     todayBtn.insertBefore(todayImg, todayBtn.firstChild)
     upcomingBtn.insertBefore(upcomingImg, upcomingBtn.firstChild)
     thisWeekBtn.insertBefore(thisWeekImg, thisWeekBtn.firstChild)
+    details.appendChild(cancelImg)
+    console.log("Hi")
 
 })()
 const InputFormDisplay = (()=>{

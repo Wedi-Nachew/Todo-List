@@ -18,7 +18,7 @@ import cancelIcon from "./icons/cancel.svg"
 const inputForm = document.querySelector("form")
 
 
-const renederIcons = (() => {
+const renederIcons = () => {
     const header = document.querySelector(".header")
     const addBtn = header.querySelector("button")
     const taskMenu =  document.querySelector(".task-menu")
@@ -53,7 +53,7 @@ const renederIcons = (() => {
     details.appendChild(cancelImg)
     console.log("Hi")
 
-})()
+}
 const InputFormDisplay = (()=>{
     const addTask = document.querySelector(".header > button")
     const inputFormWrapper = document.querySelector("#form-wrapper")

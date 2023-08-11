@@ -761,7 +761,10 @@ const Projects = (() => {
         });
 
         projects.addEventListener("click", (event) => {
-            if (event.target.className === "remove-projects") {
+            if (event.target.className === "remove-projects show") {
+                Boolean(event.target.parentNode.previousElementSibling)
+                    ? event.target.parentNode.previousElementSibling.click()
+                    : event.target.parentNode.nextElementSibling.click();
                 removeProjects(event);
             }
         });
@@ -793,3 +796,28 @@ const Projects = (() => {
     eventHandlers();
     return { projectTask };
 })();
+
+const showHideRemoveProjects = () => {
+    const projects = document.querySelector(".projects");
+    const removeBtn = projects.querySelectorAll(".remove-projects");
+
+    projects.addEventListener("mouseover", (event) => {
+        if (event.target.nodeName === "BUTTON") {
+            event.target.lastChild.classList.add("show");
+        } else if (event.target.parentNode.nodeName === "BUTTON") {
+            event.target.parentNode.lastChild.classList.add("show");
+        } else {
+            false;
+        }
+    });
+    projects.addEventListener("mouseout", (event) => {
+        if (event.target.nodeName === "BUTTON") {
+            event.target.lastChild.classList.remove("show");
+        } else if (event.target.parentNode.nodeName === "BUTTON") {
+            event.target.parentNode.lastChild.classList.remove("show");
+        } else {
+            false;
+        }
+    });
+};
+showHideRemoveProjects();

@@ -1,20 +1,20 @@
-*{
+* {
     box-sizing: border-box;
 }
 html,
-body{
+body {
     height: 100%;
     width: 100%;
     padding: 0;
     margin: 0;
 }
-body{
+body {
     display: flex;
     flex-direction: column;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     box-sizing: border-box;
 }
-.header{
+.header {
     background-color: #1b263b;
     color: white;
     display: flex;
@@ -27,13 +27,13 @@ body{
     width: 100%;
 }
 
-.header h1{
+.header h1 {
     margin-top: 40px;
     font-size: 2rem;
     vertical-align: center;
-    font-family: 'Borel', cursive;
+    font-family: "Borel", cursive;
 }
-.header > img[src$="svg"]{
+.header > img[src$="svg"] {
     height: 45px;
     width: 45px;
     margin: 16px 0 20px 30px;
@@ -41,7 +41,7 @@ body{
     border-radius: 50%;
     box-shadow: 0 0 10px #1b263f;
 }
-.header > button{
+.header > button {
     margin-left: auto;
     color: #000;
     padding: 5px 40px 5px 10px;
@@ -57,17 +57,17 @@ body{
     font-family: inherit;
     font-weight: 400;
 }
-.header > button:hover{
+.header > button:hover {
     background-color: #71f279;
 }
-.header + div{
+.header + div {
     display: flex;
     flex-grow: 1;
     padding-right: 75px;
     margin-top: 10vh;
     /* width: 100vw; */
 }
-.side-bar{
+.side-bar {
     display: flex;
     flex-direction: column;
     background-color: hsl(0, 0%, 97%);
@@ -75,21 +75,20 @@ body{
     padding: 40px 20px 75px 20px;
     width: 22vw;
     position: fixed;
-    
 }
 .task-menu,
-.projects{
+.projects {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding-bottom: 0;
     background-color: hsl(0, 0%, 97%);
 }
-.projects{
+.projects {
     flex-grow: 1;
     overflow-y: auto;
 }
-.side-bar button{
+.side-bar button {
     width: 90%;
     height: 35px;
     text-align: left;
@@ -105,42 +104,42 @@ body{
     font-weight: 400;
     padding: 3px 8px 3px 15px;
 }
-.side-bar button:hover{
+.side-bar button:hover {
     background-color: hsl(0, 0%, 92%);
     font-weight: 700;
 }
-button span{
+button span {
     font-size: 2rem;
     margin-bottom: 8px;
 }
-.projects + button{
-   height: 40px;
-   font-weight: 700;
-   margin-top: 10px;
+.projects + button {
+    height: 40px;
+    font-weight: 700;
+    margin-top: 10px;
 }
-img[src$="svg"]{
+img[src$="svg"] {
     height: 25px;
     width: auto;
 }
-.projects h2{
-    margin: 5px  0 0 0;
+.projects h2 {
+    margin: 5px 0 0 0;
     width: auto;
     position: sticky;
     top: 0%;
     padding: 10px 0;
     background-color: hsl(0, 0%, 97%);
 }
-.remove-projects{
+.remove-projects {
     margin-left: auto;
 }
 #form-wrapper,
 #project-wrapper,
-#details-wrapper{
+#details-wrapper {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,7 +149,7 @@ img[src$="svg"]{
 input,
 form button,
 select,
-textarea{
+textarea {
     margin: 0;
     padding: 0;
     border: none;
@@ -160,7 +159,7 @@ textarea{
     outline: none;
 }
 #form-wrapper form,
-#project-wrapper form{
+#project-wrapper form {
     display: flex;
     flex-direction: column;
     width: 550px;
@@ -169,30 +168,31 @@ textarea{
     background-color: #fff;
     position: relative;
 }
-input, textarea{
+input,
+textarea {
     padding: 5px 10px;
 }
 form input[name="title"],
-form input[name="name"]{
+form input[name="name"] {
     font-size: 1.35rem;
     font-weight: 600;
     margin-top: 5px;
     padding-left: 0;
 }
 form input[name="title"]::placeholder,
-form input[name="name"]::placeholder{
+form input[name="name"]::placeholder {
     font-size: 1.2rem;
     font-weight: 600;
     color: #141414;
 }
-form textarea{
+form textarea {
     font-size: 1rem;
     resize: none;
     padding-left: 0;
 }
-form select, 
+form select,
 form input[type="date"],
-form select + button{
+form select + button {
     padding: 5px;
     margin: 5px;
     border: 1px solid #20a4f3;
@@ -201,14 +201,14 @@ form select + button{
     background-color: hsl(0, 0%, 97%);
     cursor: pointer;
 }
-form input[type="date"]{
+form input[type="date"] {
     cursor: default;
     width: 150px;
 }
-form div{
+form div {
     display: flex;
 }
-form div button{
+form div button {
     margin-left: auto;
     background-color: #1982c4;
     border: none;
@@ -217,22 +217,22 @@ form div button{
     font-size: 1.1rem;
     width: 150px;
 }
-form div{
+form div {
     position: relative;
 }
-form select{
+form select {
     padding-top: 3px;
     background-image: url(../src/icons/drop-down.svg);
     background-repeat: no-repeat;
     background-position: right center;
     background-size: auto 38px;
 }
-#project-wrapper form{
+#project-wrapper form {
     width: 350px;
     height: 150px;
     justify-content: space-around;
 }
-#project-wrapper .add-project{
+#project-wrapper .add-project {
     background-color: #1982c4;
     border: none;
     color: #fff;
@@ -245,11 +245,11 @@ form select{
     position: relative;
 }
 #project-wrapper .add-project:hover,
-form div button:hover{
+form div button:hover {
     background-color: #3a86ff;
-    color: #000
+    color: #000;
 }
-#details-wrapper .details{
+#details-wrapper .details {
     height: 250px;
     display: grid;
     grid-template-columns: 90px auto;
@@ -263,17 +263,17 @@ form div button:hover{
     column-gap: 50px;
     position: relative;
 }
-#details-wrapper .details p{
+#details-wrapper .details p {
     margin: 5px 0;
     font-size: 1.15rem;
-    overflow-y : auto;
+    overflow-y: auto;
 }
-#details-wrapper .details p:nth-child(2n+1){
+#details-wrapper .details p:nth-child(2n + 1) {
     font-weight: 600;
 }
 #details-wrapper img,
-#form-wrapper  img,
-#project-wrapper img{
+#form-wrapper img,
+#project-wrapper img {
     width: 30px;
     height: auto;
     position: absolute;
@@ -281,13 +281,13 @@ form div button:hover{
     right: 10px;
     cursor: pointer;
 }
-#project-wrapper img{
+#project-wrapper img {
     width: 25px;
 }
-.show{
+.show {
     visibility: visible;
 }
-.hidden{
+.hidden {
     visibility: hidden;
 }
 
@@ -297,38 +297,38 @@ form div button:hover{
     padding: 0 200px 40px 50px;
     width: 80vw;
 }
-.content{
+.content {
     display: flex;
     flex-direction: column;
-    gap:10px;
+    gap: 10px;
 }
-.main > h1{
+.main > h1 {
     margin-top: 0;
     position: fixed;
     top: 63.4px;
-    background-color:rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
     width: 700px;
     margin-right: 200px;
     padding: 40px 0 20px;
 }
-.task{
+.task {
     display: flex;
     margin-top: 0;
     justify-content: center;
     gap: 10px;
     padding: 0 10px;
-    border: 1px solid rgb(128, 128, 128, .4);
+    border: 1px solid rgb(128, 128, 128, 0.4);
     height: 75px;
 }
-.task-text{
+.task-text {
     display: flex;
     flex-grow: 1;
     justify-content: center;
     padding-top: 15px;
     align-items: center;
-    gap : 20px;
+    gap: 20px;
 }
-.task-text div p{
+.task-text div p {
     margin-top: 0;
     margin-bottom: 14px;
     width: 15ch;
@@ -336,67 +336,57 @@ form div button:hover{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.task-text div h3{
+.task-text div h3 {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 1.1rem;
 }
 
-.task-text > img:last-of-type{
+.task-text > img:last-of-type {
     margin-right: 40px;
     cursor: pointer;
 }
-.task-text > img{
+.task-text > img {
     cursor: pointer;
     margin-bottom: 15px;
     height: 22px;
 }
-.task-text img:hover{
+.task-text img:hover {
     height: 23px;
     box-shadow: 0 0 5px hsl(0, 0%, 75%);
     border-radius: 50%;
 }
-.task-text > p{
+.task-text > p {
     margin-left: auto;
     width: 60px;
     font-size: 1.1rem;
     padding-bottom: 10px;
 }
-input[type="checkbox"]{
+input[type="checkbox"] {
     width: 45px;
 }
-input[type="checkbox"]{
+input[type="checkbox"] {
     content: url("../src/icons/unchecked.svg");
 }
 
-#task-completion.checked{
+#task-completion.checked {
     content: url("../src/icons/checked.svg");
     width: 45px;
 }
-.priority, .status{
+.priority,
+.status {
     display: none;
 }
-.side-bar button.active{
+.side-bar button.active {
     background-color: hsl(0, 0%, 92%);
     font-weight: 700;
 }
-.task.completed{
-    color:hsl(0, 0%, 60%);
+.task.completed {
+    color: hsl(0, 0%, 60%);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.remove-projects {
+    visibility: hidden;
+}
+.show {
+    visibility: visible;
+}
